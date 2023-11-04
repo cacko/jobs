@@ -7,6 +7,10 @@ class DbConfig(BaseModel):
     url: str
 
 
+class FirebaseConfig(BaseModel):
+    admin_json: str
+
+
 class ApiConfig(BaseModel):
     host: str
     port: int
@@ -28,6 +32,7 @@ class Settings(BaseSettings):
     db: DbConfig
     api: ApiConfig
     aws: AWSConfig
+    firebase: FirebaseConfig
 
     class Config:
         env_nested_delimiter = '__'

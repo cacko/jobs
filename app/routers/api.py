@@ -3,7 +3,14 @@ import logging
 from math import floor
 from typing import Optional
 from uuid import uuid4
-from fastapi import APIRouter, HTTPException, Request, Form, File
+from fastapi import (
+    APIRouter,
+    HTTPException,
+    Request,
+    Form,
+    File,
+    Depends
+)
 from app.database.database import Database
 from app.database.models import (
     Company,
@@ -17,6 +24,7 @@ from corestring import split_with_quotes
 from corefile import TempPath
 from peewee import fn
 from datetime import datetime, timedelta, timezone
+from .auth import check_auth
 
 
 router = APIRouter()
@@ -54,7 +62,8 @@ def get_list_response(
 def list_jobs(
     page: int = 1,
     limit: int = 20,
-    last_modified: Optional[float] = None
+    last_modified: Optional[float] = None,
+    auth_user=Depends(check_auth)
 ):
     return get_list_response(
         page=page,
@@ -64,7 +73,10 @@ def list_jobs(
 
 
 @router.get("/api/job/{slug}", tags=["api"])
-def get_job(slug: str):
+def get_job(
+    slug: str,
+    auth_user=Depends(check_auth)
+):
     try:
         job = Job.select(Job).where(Job.slug == slug).get()
         assert job
