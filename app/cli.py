@@ -1,6 +1,6 @@
 from pathlib import Path
 import typer
-from app.database.fields import JobStatus, LocationType, Source
+from app.database.fields import JobEvent, JobStatus, LocationType, Source
 from app.database.models.position import Position
 from app.main import serve
 from app.database import create_tables
@@ -8,7 +8,8 @@ from app.database.models import (
     Company,
     CV,
     Location,
-    Job
+    Job,
+    Event
 )
 from typing_extensions import Annotated
 from app.core.pdf import to_pil
@@ -94,6 +95,51 @@ def add_job(
 
     logging.debug(f"Created: {created}")
     logging.info(f"\n{job.to_table()}")
+
+
+@cli.command()
+def apply(
+    company: Annotated[str, typer.Option()],
+    position: Annotated[str, typer.Option()],
+    city: Annotated[str, typer.Option()],
+    url:  Annotated[str, typer.Option()],
+    cv:  Annotated[Path, typer.Option()],
+    note: Annotated[Path, typer.Option()],
+    status: Annotated[JobStatus, typer.Option()] = JobStatus.PENDING,
+    country: Annotated[str, typer.Option()] = "gb",
+    source: Annotated[Source, typer.Option()] = Source.LINKEDIN,
+    site: Annotated[LocationType, typer.Option()] = LocationType.HYBRID
+):
+    location_obj, _ = Location.get_or_create(
+        country_iso=to_iso(country),
+        city=city
+    )
+    position_obj, _ = Position.get_or_create(name=position)
+    cv_obj = CV.from_path(cv)
+    company_obj, _ = Company.get_or_create(name=company)
+
+    job, created = Job.get_or_create(
+        Source=source,
+        Company=company_obj,
+        OnSiteRemote=site,
+        Location=location_obj,
+        CV=cv_obj,
+        Status=status,
+        ad_url=url,
+        Position=position_obj
+    )
+
+    logging.debug(f"Created: {created}")
+    logging.info(f"\n{job.to_table()}")
+
+    event, created = Event.get_or_create(
+        Job=job,
+        Event=JobEvent.APPLIED,
+        description=note
+    )
+
+    logging.debug(f"Created: {created}")
+    logging.info(f"\n{event.to_table()}")
 
 
 @cli.callback(invoke_without_command=True)

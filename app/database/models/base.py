@@ -1,6 +1,7 @@
 from peewee import Model, DoesNotExist
 from playhouse.shortcuts import model_to_dict
 from humanfriendly.tables import format_robust_table
+from fuzzelinho import extract
 
 
 class DbModel(Model):
@@ -10,6 +11,16 @@ class DbModel(Model):
             return cls.get(*query, **filters)
         except DoesNotExist:
             return None
+
+    @classmethod
+    def get_similar(cls, query, values):
+        try:
+            assert values
+            result = extract(query, values)
+            assert result
+            return result
+        except AssertionError:
+            return query
 
     def to_dict(self):
         return model_to_dict(self)

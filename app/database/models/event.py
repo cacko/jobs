@@ -2,9 +2,11 @@ from .base import DbModel
 from peewee import (
     CharField,
     ForeignKeyField,
+    DateTimeField
 )
 from app.database import Database
 from app.database.fields import JobEventField
+from datetime import datetime
 from .job import Job
 
 
@@ -13,8 +15,9 @@ class Event(DbModel):
     Job = ForeignKeyField(Job)
     Event = JobEventField()
     description = CharField()
+    timestamp = DateTimeField(default=datetime.now)
 
     class Meta:
         database = Database.db
         table_name = 'jobs_event'
-        order_by = ["name"]
+        order_by = ["-timestamp"]
