@@ -11,9 +11,10 @@ from json import JSONEncoder
 class PeeEncoder(JSONEncoder):
 
     def default(self, o: Any) -> Any:
+        print(o)
         match o:
             case datetime.datetime():
-                return datetime.datetime.timestamp(0)
+                return datetime.datetime.timestamp(o)
         return super().default(o)
 
 
