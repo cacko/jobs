@@ -78,7 +78,7 @@ def get_job(
     auth_user=Depends(check_auth)
 ):
     try:
-        job = Job.select(Job).where(Job.slug == slug).get()
+        job: Job = Job.select(Job).where(Job.slug == slug).get()
         assert job
         events = Event.select(Event).where(Event.Job == job)
         return dict(
@@ -86,17 +86,17 @@ def get_job(
             company=job.Company.name,
             id=job.slug,
             last_modified=datetime.timestamp(job.last_modified),
-            cv=job.CV.name,
+            CV=job.CV,
             deleted=job.deleted,
             status=job.Status,
-            country=job.Location.country_iso,
-            city=job.Location.city,
+            Location=job.Location,
             onsite=job.OnSiteRemote,
             source=job.Source,
             events=list(events.dicts())
         )
     except AssertionError:
         raise HTTPException(404)
+    
 
 
 @router.post("/api/artworks", tags=["api"])
