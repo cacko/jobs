@@ -1,4 +1,6 @@
+import logging
 from typing import Any, Optional
+from venv import logger
 from .service_account import ServiceAccount
 import firebase_admin
 import firebase_admin.auth
@@ -6,10 +8,10 @@ from pydantic import BaseModel
 
 
 class AuthUser(BaseModel):
-    name: str
-    picture: str
     exp: int
     uid: str
+    name: Optional[str] = None
+    picture: Optional[str] = None
 
 
 class AuthMeta(type):
@@ -28,4 +30,5 @@ class Auth(object, metaclass=AuthMeta):
             token,
             app=ServiceAccount.app
         )
+        logging.debug(f"auth user {res}")
         return AuthUser(**res)
