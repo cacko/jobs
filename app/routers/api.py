@@ -36,10 +36,10 @@ def get_list_response(
         company=job.Company.name,
         id=job.slug,
         last_modified=datetime.timestamp(job.last_modified),
-        CV=job.CV,
+        CV=job.CV.to_dict(),
         deleted=job.deleted,
         status=job.Status,
-        Location=job.Location,
+        Location=job.Location.to_dict(),
         onsite=job.OnSiteRemote,
         source=job.Source
     ) for job in query.paginate(page, limit)]

@@ -1,4 +1,3 @@
-import json
 from typing import Optional
 from app.database import Database
 from .base import DbModel
@@ -36,7 +35,14 @@ class CV(DbModel):
     def to_dict(self):
         data = model_to_dict(self)
         del data["data"]
-        return data
+        return {
+            **data,
+            **dict(
+                thumb_src=self.thumb_src,
+                webp_src=self.webp_src,
+                raw_src=self.raw_src
+            )
+        }
 
     @classmethod
     def from_path(cls, cv_path: Path):
@@ -104,16 +110,6 @@ class CV(DbModel):
     def thumb_src(self) -> str:
         stem = (Path(self.Image)).stem
         return f"{CDN_ROOT}/{stem}.thumbnail.webp"
-
-    def to_json(self):
-        return json.dumps(dict(
-            slug=self.slug,
-            name=self.name,
-            added=self.added,
-            thumb_src=self.thumb_src,
-            webp_src=self.webp_src,
-            raw_src=self.raw_src
-        ))
 
     class Meta:
         database = Database.db
