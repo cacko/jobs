@@ -2,6 +2,7 @@ from fastapi.exceptions import HTTPException
 from starlette.requests import Request
 from starlette.status import HTTP_403_FORBIDDEN
 from app.firebase.auth import Auth
+import logging
 
 
 ALLOWED_IPS = ["127.0.0.1"]
@@ -13,6 +14,7 @@ class Authorization:
         try:
             client = request.client
             assert client
+            logging.info(f"auth -> {client.host}")
             if client.host in ALLOWED_IPS:
                 return
             token = request.headers.get("x-user-token", "")
