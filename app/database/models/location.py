@@ -1,4 +1,5 @@
 from functools import lru_cache
+import json
 from .base import DbModel
 from peewee import (
     CharField
@@ -19,6 +20,12 @@ class Location(DbModel):
     def get_or_create(cls, **kwargs):
         kwargs["city"] = cls.get_similar(kwargs["city"], cls.get_cities())
         return super().get_or_create(**kwargs)
+
+    def toJson(self):
+        return json.dumps(dict(
+            country_iso=self.country_iso,
+            city=self.city
+        ))
 
     class Meta:
         database = Database.db

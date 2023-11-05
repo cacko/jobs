@@ -1,8 +1,4 @@
-from functools import reduce
-import logging
-from math import floor
 from typing import Optional
-from uuid import uuid4
 from fastapi import (
     APIRouter,
     HTTPException,
@@ -11,19 +7,12 @@ from fastapi import (
     File,
     Depends
 )
-from app.database.database import Database
 from app.database.models import (
-    Company,
-    Location,
-    Position,
     Job,
     Event
 )
 from fastapi.responses import JSONResponse
-from corestring import split_with_quotes
-from corefile import TempPath
-from peewee import fn
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 from .auth import check_auth
 
 
@@ -37,7 +26,7 @@ def get_list_response(
 ):
     results = []
     filters = [True]
-    order_by = []
+    # order_by = []
 
     base_query = Job.select(Job)
     query = base_query.where(*filters)
@@ -51,7 +40,6 @@ def get_list_response(
         deleted=job.deleted,
         status=job.Status,
         Location=job.Location,
-
         onsite=job.OnSiteRemote,
         source=job.Source
     ) for job in query.paginate(page, limit)]
