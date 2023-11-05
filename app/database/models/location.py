@@ -21,7 +21,7 @@ class Location(DbModel):
         kwargs["city"] = cls.get_similar(kwargs["city"], cls.get_cities())
         return super().get_or_create(**kwargs)
 
-    def toJson(self):
+    def to_json(self):
         return json.dumps(dict(
             country_iso=self.country_iso,
             city=self.city

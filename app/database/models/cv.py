@@ -104,8 +104,8 @@ class CV(DbModel):
     def thumb_src(self) -> str:
         stem = (Path(self.Image)).stem
         return f"{CDN_ROOT}/{stem}.thumbnail.webp"
-    
-    def toJson(self):
+
+    def to_json(self):
         return json.dumps(dict(
             slug=self.slug,
             name=self.name,
