@@ -1,7 +1,19 @@
+import json
 from peewee import Model, DoesNotExist
 from playhouse.shortcuts import model_to_dict
 from humanfriendly.tables import format_robust_table
 from fuzzelinho import extract
+
+
+from json import JSONEncoder
+
+
+def _default(self, obj):
+    return getattr(obj.__class__, "to_json", _default.default)(obj)
+
+
+_default.default = JSONEncoder().default
+JSONEncoder.default = _default
 
 
 class DbModel(Model):
@@ -24,6 +36,9 @@ class DbModel(Model):
 
     def to_dict(self):
         return model_to_dict(self)
+    
+    def to_json(self):
+        return json.dumps(self.to_dict())
 
     def to_table(self):
         data = self.to_dict()

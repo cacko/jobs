@@ -30,7 +30,7 @@ class CV(DbModel):
     name = CharField()
     data = BlobField()
     Image = ImageField()
-    added = DateTimeField()
+    added = DateTimeField(default=datetime.datetime.now)
 
     def to_dict(self):
         data = model_to_dict(self)
