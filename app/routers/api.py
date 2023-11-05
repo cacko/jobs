@@ -47,11 +47,11 @@ def get_list_response(
         company=job.Company.name,
         id=job.slug,
         last_modified=datetime.timestamp(job.last_modified),
-        cv=job.CV.name,
+        CV=job.CV,
         deleted=job.deleted,
         status=job.Status,
-        country=job.Location.country_iso,
-        city=job.Location.city,
+        Location=job.Location,
+
         onsite=job.OnSiteRemote,
         source=job.Source
     ) for job in query.paginate(page, limit)]
@@ -96,7 +96,6 @@ def get_job(
         )
     except AssertionError:
         raise HTTPException(404)
-    
 
 
 @router.post("/api/artworks", tags=["api"])
