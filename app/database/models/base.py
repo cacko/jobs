@@ -1,11 +1,20 @@
+import datetime
 import json
+from typing import Any
 from peewee import Model, DoesNotExist
 from playhouse.shortcuts import model_to_dict
 from humanfriendly.tables import format_robust_table
 from fuzzelinho import extract
-
-
 from json import JSONEncoder
+
+
+class PeeEncoder(JSONEncoder):
+
+    def default(self, o: Any) -> Any:
+        match o:
+            case datetime.datetime():
+                return datetime.datetime.timestamp(0)
+        return super().default(o)
 
 
 def _default(self, obj):
