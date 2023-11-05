@@ -1,5 +1,6 @@
 import datetime
 import json
+import logging
 from typing import Any
 from peewee import Model, DoesNotExist
 from playhouse.shortcuts import model_to_dict
@@ -11,7 +12,7 @@ from json import JSONEncoder
 class PeeEncoder(JSONEncoder):
 
     def default(self, o: Any) -> Any:
-        print(o)
+        logging.debug(o)
         match o:
             case datetime.datetime():
                 return datetime.datetime.timestamp(o)
