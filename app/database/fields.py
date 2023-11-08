@@ -1,5 +1,4 @@
 from peewee import CharField
-from enum import StrEnum
 from app.core.s3 import S3
 from uuid import uuid4
 from pathlib import Path
@@ -7,43 +6,12 @@ from corefile import TempPath
 from PIL import Image
 from app.routers.models import ImageReponse
 from app.config import app_config
-
+from .enums import LocationType, Source, JobEvent, JobStatus
 
 CDN_ROOT = (
     f"https://{app_config.aws.cloudfront_host}"
     f"/{app_config.aws.media_location}"
 )
-
-
-class Source(StrEnum):
-    LINKEDIN = "linkedin"
-    DIRECT = "direct"
-
-    @classmethod
-    def values(cls):
-        return [member.value for member in cls.__members__.values()]
-
-    @classmethod
-    def to_categories(cls, values: list[str]) -> list['Source']:
-        return [cls(x.lower()) for x in values if x.lower() in cls.values()]
-
-
-class LocationType(StrEnum):
-    ONSITE = "onsite"
-    HYBRID = "hybrid"
-    REMOTE = "remote"
-
-
-class JobStatus(StrEnum):
-    PENDING = "pending"
-    REJECTED = "rejected"
-    IN_PROGRESS = "in_progress"
-
-
-class JobEvent(StrEnum):
-    APPLIED = "applied"
-    INTERVIEW = "interview"
-    RESPONSE = "response"
 
 
 class LocationTypeField(CharField):

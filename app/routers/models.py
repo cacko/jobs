@@ -2,7 +2,7 @@ import datetime
 from typing import Optional
 from pydantic import BaseModel
 
-from app.database.fields import JobEvent, JobStatus, LocationType, Source
+from app.database.enums import JobEvent, JobStatus, LocationType, Source
 
 
 class ImageReponse(BaseModel):
