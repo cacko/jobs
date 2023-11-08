@@ -42,7 +42,7 @@ def get_list_response(
 def list_jobs(
     page: int = 1,
     limit: int = 20,
-    last_modified: Optional[float] = None,
+    last_modified: Optional[datetime] = None,
     # auth_user=Depends(check_auth)
 ):
     return get_list_response(
