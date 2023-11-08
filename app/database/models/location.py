@@ -5,6 +5,7 @@ from peewee import (
     CharField
 )
 from app.database import Database
+from app.routers.models import LocationResponse
 
 
 class Location(DbModel):
@@ -26,6 +27,12 @@ class Location(DbModel):
             country_iso=self.country_iso,
             city=self.city
         ))
+
+    def to_response(self):
+        return LocationResponse(
+            country_iso=self.country_iso,
+            city=self.city
+        )
 
     class Meta:
         database = Database.db

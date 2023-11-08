@@ -3,6 +3,8 @@ from playhouse.shortcuts import model_to_dict
 from humanfriendly.tables import format_robust_table
 from fuzzelinho import extract
 
+from app.routers.models import BaseResponse
+
 
 class DbModel(Model):
     @classmethod
@@ -25,7 +27,7 @@ class DbModel(Model):
     def to_dict(self):
         return model_to_dict(self)
 
-    def to_response(self):
+    def to_response(self) -> BaseResponse:
         raise NotImplementedError
 
     def to_table(self):

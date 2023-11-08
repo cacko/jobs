@@ -1,4 +1,5 @@
-from typing import Optional
+import logging
+from typing import Any, Optional
 from fastapi import (
     APIRouter,
     HTTPException,
@@ -31,18 +32,9 @@ def get_list_response(
     base_query = Job.select(Job)
     query = base_query.where(*filters)
 
-    results = [dict(
-        position=job.Position.name,
-        company=job.Company.name,
-        id=job.slug,
-        last_modified=job.last_modified,
-        CV=job.CV,
-        deleted=job.deleted,
-        status=job.Status,
-        Location=job.Location,
-        onsite=job.OnSiteRemote,
-        source=job.Source
-    ) for job in query.paginate(page, limit)]
+    results = [job.to_response().model_dump()
+               for job in query.paginate(page, limit)]
+    logging.debug(results)
     return JSONResponse(content=results)
 
 
@@ -51,7 +43,7 @@ def list_jobs(
     page: int = 1,
     limit: int = 20,
     last_modified: Optional[float] = None,
-    auth_user=Depends(check_auth)
+    # auth_user=Depends(check_auth)
 ):
     return get_list_response(
         page=page,
@@ -63,7 +55,7 @@ def list_jobs(
 @router.get("/api/job/{slug}", tags=["api"])
 def get_job(
     slug: str,
-    auth_user=Depends(check_auth)
+    # auth_user=Depends(check_auth)
 ):
     try:
         job: Job = Job.select(Job).where(Job.slug == slug).get()

@@ -93,7 +93,7 @@ class Job(DbModel):
             cv=self.CV.to_response(),
             deleted=self.deleted,
             status=self.Status,
-            location=self.Location.to_reponse(),
+            location=self.Location.to_response(),
             onsite=self.OnSiteRemote,
             source=self.Source
         )
