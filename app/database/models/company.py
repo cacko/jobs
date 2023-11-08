@@ -19,6 +19,9 @@ class Company(DbModel):
         kwargs["name"] = cls.get_similar(kwargs["name"], cls.get_names())
         return super().get_or_create(**kwargs)
 
+    def to_response(self):
+        return self.name
+
     class Meta:
         database = Database.db
         table_name = 'jobs_company'

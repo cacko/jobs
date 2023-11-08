@@ -5,6 +5,14 @@ from uuid import uuid4
 from pathlib import Path
 from corefile import TempPath
 from PIL import Image
+from app.routers.models import ImageReponse
+from app.config import app_config
+
+
+CDN_ROOT = (
+    f"https://{app_config.aws.cloudfront_host}"
+    f"/{app_config.aws.media_location}"
+)
 
 
 class Source(StrEnum):
@@ -74,7 +82,30 @@ class JobEventField(CharField):
         return JobEvent(value)
 
 
-class ImageField(CharField):
+class ImageFieldMeta(type):
+
+    def raw_src(cls, image_path: Path) -> str:
+        stem = image_path.stem
+        return f"{CDN_ROOT}/{stem}.png.png"
+
+    def webp_src(cls, image_path: Path) -> str:
+        stem = image_path.stem
+        return f"{CDN_ROOT}/{stem}.webp"
+
+    def thumb_src(cls, image_path: Path) -> str:
+        stem = image_path.stem
+        return f"{CDN_ROOT}/{stem}.thumbnail.webp"
+
+    def to_response(cls, image: str):
+        pth = Path(image)
+        return ImageReponse(
+            thumb_src=cls.thumb_src(pth),
+            webp_src=cls.webp_src(pth),
+            raw_src=cls.raw_src(pth)
+        )
+
+
+class ImageField(CharField, metaclass=ImageFieldMeta):
 
     def db_value(self, value: str):
         image_path = Path(value)

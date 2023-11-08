@@ -6,6 +6,7 @@ from peewee import (
 )
 from app.database import Database
 from app.database.fields import JobEventField
+from app.routers.models import JobEventResponse
 from datetime import datetime
 from .job import Job
 
@@ -16,6 +17,9 @@ class Event(DbModel):
     Event = JobEventField()
     description = CharField()
     timestamp = DateTimeField(default=datetime.now)
+
+    def to_response(self):
+        return JobEventResponse(**self.to_dict())
 
     class Meta:
         database = Database.db

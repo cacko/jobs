@@ -20,6 +20,7 @@ from peewee import (
 from app.config import app_config
 import datetime
 from slugify import slugify
+from app.routers.models import JobResponse
 
 
 class Job(DbModel):
@@ -82,6 +83,20 @@ class Job(DbModel):
     @property
     def web_uri(self) -> str:
         return f"{app_config.api.web_host}/v/{self.slug}"
+
+    def to_response(self):
+        return JobResponse(
+            position=self.Position.name,
+            company=self.Company.name,
+            id=self.slug,
+            last_modified=self.last_modified,
+            cv=self.CV.to_response(),
+            deleted=self.deleted,
+            status=self.Status,
+            location=self.Location.to_reponse(),
+            onsite=self.OnSiteRemote,
+            source=self.Source
+        )
 
     class Meta:
         database = Database.db

@@ -9,7 +9,6 @@ from peewee import (
     DateTimeField,
     BlobField, IntegrityError
 )
-from app.config import app_config
 from pathlib import Path
 from slugify import slugify
 from hashlib import sha1
@@ -18,11 +17,7 @@ from corefile import TempPath
 from corefile.filepath import file_hash
 from datetime import datetime, timezone
 from app.core.pdf import to_pil
-
-CDN_ROOT = (
-    f"https://{app_config.aws.cloudfront_host}"
-    f"/{app_config.aws.media_location}"
-)
+from app.routers.models import CVResponse
 
 
 class CV(DbModel):
@@ -35,14 +30,12 @@ class CV(DbModel):
     def to_dict(self):
         data = model_to_dict(self)
         del data["data"]
-        return {
-            **data,
-            **dict(
-                thumb_src=self.thumb_src,
-                webp_src=self.webp_src,
-                raw_src=self.raw_src
-            )
-        }
+        return data
+
+    def to_response(self):
+        data = self.to_dict()
+        data.setdefault("image", ImageField.to_response(self.Image))
+        return CVResponse(**data)
 
     @classmethod
     def from_path(cls, cv_path: Path):
@@ -95,21 +88,6 @@ class CV(DbModel):
     def save(self, *args, **kwds):
         self.slug = self.__class__.get_slug(**model_to_dict(self))
         return super().save(*args, **kwds)
-
-    @property
-    def raw_src(self) -> str:
-        stem = (Path(self.Image)).stem
-        return f"{CDN_ROOT}/{stem}.png.png"
-
-    @property
-    def webp_src(self) -> str:
-        stem = (Path(self.Image)).stem
-        return f"{CDN_ROOT}/{stem}.webp"
-
-    @property
-    def thumb_src(self) -> str:
-        stem = (Path(self.Image)).stem
-        return f"{CDN_ROOT}/{stem}.thumbnail.webp"
 
     class Meta:
         database = Database.db
