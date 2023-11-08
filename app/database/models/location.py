@@ -28,7 +28,7 @@ class Location(DbModel):
             city=self.city
         ))
 
-    def to_response(self):
+    def to_response(self, **kwds):
         return LocationResponse(
             country_iso=self.country_iso,
             city=self.city

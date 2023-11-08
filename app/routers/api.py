@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Optional
+from typing import Optional
 from fastapi import (
     APIRouter,
     HTTPException,
@@ -61,19 +61,8 @@ def get_job(
         job: Job = Job.select(Job).where(Job.slug == slug).get()
         assert job
         events = Event.select(Event).where(Event.Job == job)
-        return dict(
-            position=job.Position.name,
-            company=job.Company.name,
-            id=job.slug,
-            last_modified=datetime.timestamp(job.last_modified),
-            CV=job.CV,
-            deleted=job.deleted,
-            status=job.Status,
-            Location=job.Location,
-            onsite=job.OnSiteRemote,
-            source=job.Source,
-            events=list(events.dicts())
-        )
+        response = job.to_response(events=[e.to_response() for e in events])
+        return JSONResponse(content=response.model_dump())
     except AssertionError:
         raise HTTPException(404)
 

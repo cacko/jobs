@@ -27,7 +27,7 @@ class DbModel(Model):
     def to_dict(self):
         return model_to_dict(self)
 
-    def to_response(self) -> BaseResponse:
+    def to_response(self, **kwds) -> BaseResponse:
         raise NotImplementedError
 
     def to_table(self):

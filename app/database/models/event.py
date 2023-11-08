@@ -18,8 +18,12 @@ class Event(DbModel):
     description = CharField()
     timestamp = DateTimeField(default=datetime.now)
 
-    def to_response(self):
-        return JobEventResponse(**self.to_dict())
+    def to_response(self, **kwds):
+        return JobEventResponse(
+            event=self.Event,
+            description=self.description,
+            timestamp=self.timestamp
+        )
 
     class Meta:
         database = Database.db

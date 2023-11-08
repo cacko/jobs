@@ -32,7 +32,7 @@ class CV(DbModel):
         del data["data"]
         return data
 
-    def to_response(self):
+    def to_response(self, **kwds):
         data = self.to_dict()
         data.setdefault("image", ImageField.to_response(self.Image))
         return CVResponse(**data)

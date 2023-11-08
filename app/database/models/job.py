@@ -84,7 +84,7 @@ class Job(DbModel):
     def web_uri(self) -> str:
         return f"{app_config.api.web_host}/v/{self.slug}"
 
-    def to_response(self):
+    def to_response(self, **kwds):
         return JobResponse(
             position=self.Position.name,
             company=self.Company.name,
@@ -95,7 +95,8 @@ class Job(DbModel):
             status=self.Status,
             location=self.Location.to_response(),
             onsite=self.OnSiteRemote,
-            source=self.Source
+            source=self.Source,
+            **kwds
         )
 
     class Meta:

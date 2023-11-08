@@ -7,8 +7,8 @@ from app.database.enums import JobEvent, JobStatus, LocationType, Source
 
 class BaseResponse(BaseModel):
 
-    def model_dump(self, **kwds):
-        return super().model_dump(mode='json', **kwds)
+    def model_dump(self):
+        return super().model_dump(mode='json')
 
 
 class ImageReponse(BaseResponse):
