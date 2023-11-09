@@ -73,11 +73,13 @@ class Job(DbModel):
         self.save(only=["deleted", "last_modified"])
 
     def save(self, *args, **kwds):
-        self.slug = self.__class__.get_slug(**dict(
-            Company=self.Company,
-            Position=self.Position,
-            ad_url=self.ad_url
-        ))
+        if not self.slug:
+            self.slug = self.__class__.get_slug(**dict(
+                Company=self.Company,
+                Position=self.Position,
+                ad_url=self.ad_url
+            ))
+        self.last_modified = datetime.datetime.now()
         return super().save(*args, **kwds)
 
     @property
