@@ -1,6 +1,6 @@
 from .base import DbModel
 from peewee import (
-    CharField,
+    TextField,
     ForeignKeyField,
     DateTimeField
 )
@@ -15,7 +15,7 @@ class Event(DbModel):
 
     Job = ForeignKeyField(Job)
     Event = JobEventField()
-    description = CharField()
+    description = TextField()
     timestamp = DateTimeField(default=datetime.now)
 
     def to_response(self, **kwds):

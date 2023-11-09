@@ -84,6 +84,10 @@ class Job(DbModel):
     def web_uri(self) -> str:
         return f"{app_config.api.web_host}/v/{self.slug}"
 
+    @property
+    def job_name(self) -> str:
+        return f"{self.Company.name}: {self.Position.name}"
+
     def to_response(self, **kwds):
         return JobResponse(
             position=self.Position.name,

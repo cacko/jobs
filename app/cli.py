@@ -16,6 +16,7 @@ from app.core.pdf import to_pil
 from coreimage.terminal import get_kitty_image as get_term_image
 import logging
 from app.prompts.jobs import ApplyInput, apply_job_form
+from app.prompts.events import EventInput, add_event_form
 
 from app.core.country import to_iso
 
@@ -134,6 +135,29 @@ def apply():
 
         logging.debug(f"Created: {created}")
         logging.info(f"\n{event.to_table()}")
+
+
+@cli.command()
+def event():
+    with add_event_form() as form:
+        ans = form.ask()
+        input = EventInput(**ans)
+        job: Job = Job.get(Job.slug == input.job_id)
+        event, created = Event.get_or_create(
+            Job=job,
+            Event=input.event,
+            description=input.description
+        )
+        logging.info(f"{event} created={created}")
+        match input.event:
+            case JobEvent.REJECT:
+                job.Status = JobStatus.REJECTED
+            case JobEvent.APPLIED:
+                job.Status = JobStatus.PENDING
+            case _:
+                job.Status = JobStatus.IN_PROGRESS
+        job.save()
+        logging.debug(f"Changaing job status to {job.Status}")
 
 
 @cli.callback(invoke_without_command=True)

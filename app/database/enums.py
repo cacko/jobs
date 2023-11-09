@@ -48,3 +48,4 @@ class JobEvent(Choices, StrEnum):
     APPLIED = "applied"
     INTERVIEW = "interview"
     RESPONSE = "response"
+    REJECT = "reject"
