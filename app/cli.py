@@ -1,5 +1,6 @@
 from pathlib import Path
 import typer
+from app.database.enums import CV_PATH
 from app.database.fields import JobEvent, JobStatus, LocationType, Source
 from app.database.models.position import Position
 from app.main import serve
@@ -15,6 +16,7 @@ from typing_extensions import Annotated
 from app.core.pdf import to_pil
 from coreimage.terminal import get_kitty_image as get_term_image
 import logging
+from app.prompts.jobs import ApplyInput, apply_job_form
 
 from app.core.country import to_iso
 
@@ -98,48 +100,41 @@ def add_job(
 
 
 @cli.command()
-def apply(
-    company: Annotated[str, typer.Option()],
-    position: Annotated[str, typer.Option()],
-    city: Annotated[str, typer.Option()],
-    url:  Annotated[str, typer.Option()],
-    cv:  Annotated[Path, typer.Option()],
-    note: Annotated[Path, typer.Option()],
-    status: Annotated[JobStatus, typer.Option()] = JobStatus.PENDING,
-    country: Annotated[str, typer.Option()] = "gb",
-    source: Annotated[Source, typer.Option()] = Source.LINKEDIN,
-    site: Annotated[LocationType, typer.Option()] = LocationType.HYBRID
-):
-    location_obj, _ = Location.get_or_create(
-        country_iso=to_iso(country),
-        city=city
-    )
-    position_obj, _ = Position.get_or_create(name=position)
-    cv_obj = CV.from_path(cv)
-    company_obj, _ = Company.get_or_create(name=company)
+def apply():
+    with apply_job_form() as form:
+        ans = form.ask()
+        input = ApplyInput(**ans)
+        logging.debug(input)
+        location_obj, _ = Location.get_or_create(
+            country_iso=to_iso(input.country),
+            city=input.city
+        )
+        position_obj, _ = Position.get_or_create(name=input.position)
+        cv_obj = CV.from_path((Path(CV_PATH) / input.cv))
+        company_obj, _ = Company.get_or_create(name=input.company)
 
-    job, created = Job.get_or_create(
-        Source=source,
-        Company=company_obj,
-        OnSiteRemote=site,
-        Location=location_obj,
-        CV=cv_obj,
-        Status=status,
-        ad_url=url,
-        Position=position_obj
-    )
+        job, created = Job.get_or_create(
+            Source=input.source,
+            Company=company_obj,
+            OnSiteRemote=input.site,
+            Location=location_obj,
+            CV=cv_obj,
+            Status=input.status,
+            ad_url=input.url,
+            Position=position_obj
+        )
 
-    logging.debug(f"Created: {created}")
-    logging.info(f"\n{job.to_table()}")
+        logging.debug(f"Created: {created}")
+        logging.info(f"\n{job.to_table()}")
 
-    event, created = Event.get_or_create(
-        Job=job,
-        Event=JobEvent.APPLIED,
-        description=note
-    )
+        event, created = Event.get_or_create(
+            Job=job,
+            Event=JobEvent.APPLIED,
+            description=input.note
+        )
 
-    logging.debug(f"Created: {created}")
-    logging.info(f"\n{event.to_table()}")
+        logging.debug(f"Created: {created}")
+        logging.info(f"\n{event.to_table()}")
 
 
 @cli.callback(invoke_without_command=True)

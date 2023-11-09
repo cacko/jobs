@@ -1,7 +1,25 @@
 from enum import StrEnum
 
 
-class Source(StrEnum):
+CV_PATH = "/Volumes/Devo/Users/jago/Documents/AleksandarSpasov"
+
+
+class Choices(object):
+
+    @classmethod
+    def values(cls):
+        return [m.value for m in cls.__members__.values()]
+
+    @classmethod
+    def keys(cls):
+        return [m.lower() for m in cls.__members__.keys()]
+
+    @classmethod
+    def members(cls):
+        return cls.__members__.values()
+
+
+class Source(Choices, StrEnum):
     LINKEDIN = "linkedin"
     DIRECT = "direct"
 
@@ -14,19 +32,19 @@ class Source(StrEnum):
         return [cls(x.lower()) for x in values if x.lower() in cls.values()]
 
 
-class LocationType(StrEnum):
+class LocationType(Choices, StrEnum):
     ONSITE = "onsite"
     HYBRID = "hybrid"
     REMOTE = "remote"
 
 
-class JobStatus(StrEnum):
+class JobStatus(Choices, StrEnum):
     PENDING = "pending"
     REJECTED = "rejected"
     IN_PROGRESS = "in_progress"
 
 
-class JobEvent(StrEnum):
+class JobEvent(Choices, StrEnum):
     APPLIED = "applied"
     INTERVIEW = "interview"
     RESPONSE = "response"
