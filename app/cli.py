@@ -1,6 +1,5 @@
 from pathlib import Path
 import typer
-from app.database.enums import CV_PATH
 from app.database.fields import JobEvent, JobStatus, LocationType, Source
 from app.database.models.position import Position
 from app.main import serve
@@ -110,7 +109,7 @@ def apply():
             city=input.city
         )
         position_obj, _ = Position.get_or_create(name=input.position)
-        cv_obj = CV.from_path((Path(CV_PATH) / input.cv))
+        cv_obj = CV.from_path(input.cv)
         company_obj, _ = Company.get_or_create(name=input.company)
 
         job, created = Job.get_or_create(

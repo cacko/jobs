@@ -1,3 +1,4 @@
+import logging
 import questionary
 from contextlib import contextmanager
 from app.database.enums import CV_PATH, JobStatus, LocationType, Source
@@ -14,12 +15,16 @@ class ApplyInput(BaseModel):
     position: str
     city: str
     url:  str
-    cv:  Path
+    cv_path:  Path
     note: str
     status: JobStatus
     country: str
     source: Source
     site: LocationType
+
+    @property
+    def cv(self) -> Path:
+        return Path(CV_PATH) / self.cv_path
 
 
 @contextmanager
@@ -66,5 +71,7 @@ def apply_job_form():
     )
     try:
         yield form
+    except Exception as e:
+        logging.exception(e)
     finally:
         return None
