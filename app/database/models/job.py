@@ -87,7 +87,7 @@ class Job(DbModel):
     def to_response(self, **kwds):
         return JobResponse(
             position=self.Position.name,
-            company=self.Company.name,
+            company=self.Company.to_response(),
             id=self.slug,
             last_modified=self.last_modified,
             cv=self.CV.to_response(),

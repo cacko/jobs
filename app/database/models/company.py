@@ -1,4 +1,6 @@
 from functools import lru_cache
+
+from app.routers.models import CompanyResponse
 from .base import DbModel
 from peewee import (
     CharField
@@ -8,6 +10,7 @@ from app.database import Database
 
 class Company(DbModel):
     name = CharField(unique=True)
+    url = CharField(null=True)
 
     @classmethod
     @lru_cache()
@@ -20,7 +23,7 @@ class Company(DbModel):
         return super().get_or_create(**kwargs)
 
     def to_response(self, **kwds):
-        return self.name
+        return CompanyResponse(**self.to_dict())
 
     class Meta:
         database = Database.db

@@ -11,6 +11,11 @@ class BaseResponse(BaseModel):
         return super().model_dump(mode='json')
 
 
+class CompanyResponse(BaseResponse):
+    name: str
+    url: Optional[str] = None
+
+
 class ImageReponse(BaseResponse):
     thumb_src: str
     webp_src: str
@@ -37,7 +42,7 @@ class JobEventResponse(BaseResponse):
 
 class JobResponse(BaseResponse):
     position: str
-    company: str
+    company: CompanyResponse
     id: str
     last_modified: datetime.datetime
     cv: CVResponse
