@@ -8,6 +8,7 @@ from fastapi import (
     File,
     Depends
 )
+from app.database.enums import JobEvent
 from app.database.models import (
     Job,
     Event
@@ -26,14 +27,14 @@ def get_list_response(
     last_modified: Optional[float] = None
 ):
     results = []
-    filters = [True]
+    filters = [Event.Event == JobEvent.APPLIED]
     # order_by = []
 
-    base_query = Job.select(Job)
+    base_query = Event.select().join_from(Event, Job)
     query = base_query.where(*filters)
 
-    results = [job.to_response().model_dump()
-               for job in query.paginate(page, limit)]
+    results = [event.Job.to_response(events=[event.to_response()]).model_dump()
+               for event in query.paginate(page, limit)]
     logging.debug(results)
     return JSONResponse(content=results)
 
