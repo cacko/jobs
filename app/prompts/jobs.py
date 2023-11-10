@@ -45,7 +45,8 @@ def apply_job_form():
             get_paths=lambda: [CV_PATH]
         ),
         note=questionary.text(
-            "Application Note"
+            "Application Note",
+            multiline=True
         ),
         status=questionary.select(
             "Status",

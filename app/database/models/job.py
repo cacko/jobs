@@ -31,7 +31,7 @@ class Job(DbModel):
     CV = ForeignKeyField(CV)
     Status = JobStatusField()
     Position = ForeignKeyField(Position)
-    ad_url = CharField()
+    url = CharField()
     last_modified = DateTimeField(default=datetime.datetime.now)
     slug = CharField(unique=True)
     deleted = BooleanField(default=False)
@@ -102,7 +102,7 @@ class Job(DbModel):
             location=self.Location.to_response(),
             onsite=self.OnSiteRemote,
             source=self.Source,
-            url=self.ad_url,
+            url=self.url,
             **kwds
         )
 

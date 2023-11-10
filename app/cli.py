@@ -65,41 +65,6 @@ def add_location(country: str, city: str):
 
 
 @cli.command()
-def add_job(
-    company: Annotated[str, typer.Option()],
-    position: Annotated[str, typer.Option()],
-    city: Annotated[str, typer.Option()],
-    url:  Annotated[str, typer.Option()],
-    cv:  Annotated[Path, typer.Option()],
-    status: Annotated[JobStatus, typer.Option()] = JobStatus.PENDING,
-    country: Annotated[str, typer.Option()] = "gb",
-    source: Annotated[Source, typer.Option()] = Source.LINKEDIN,
-    site: Annotated[LocationType, typer.Option()] = LocationType.HYBRID
-):
-    location_obj, _ = Location.get_or_create(
-        country_iso=to_iso(country),
-        city=city
-    )
-    position_obj, _ = Position.get_or_create(name=position)
-    cv_obj = CV.from_path(cv)
-    company_obj, _ = Company.get_or_create(name=company)
-
-    job, created = Job.get_or_create(
-        Source=source,
-        Company=company_obj,
-        OnSiteRemote=site,
-        Location=location_obj,
-        CV=cv_obj,
-        Status=status,
-        ad_url=url,
-        Position=position_obj
-    )
-
-    logging.debug(f"Created: {created}")
-    logging.info(f"\n{job.to_table()}")
-
-
-@cli.command()
 def apply():
     with apply_job_form() as form:
         ans = form.ask()
@@ -120,7 +85,7 @@ def apply():
             Location=location_obj,
             CV=cv_obj,
             Status=input.status,
-            ad_url=input.url,
+            url=input.url,
             Position=position_obj
         )
 
