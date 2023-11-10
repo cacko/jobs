@@ -102,6 +102,7 @@ class Job(DbModel):
             location=self.Location.to_response(),
             onsite=self.OnSiteRemote,
             source=self.Source,
+            url=self.ad_url,
             **kwds
         )
 

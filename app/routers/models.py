@@ -51,4 +51,5 @@ class JobResponse(BaseResponse):
     location: LocationResponse
     onsite: LocationType
     source: Source
+    url: str
     events: Optional[list[JobEventResponse]] = None

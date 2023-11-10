@@ -9,3 +9,11 @@ def to_iso(text: str):
         cnt = pycountry.countries.search_fuzzy(text)
         assert cnt
         return cnt[0].alpha_2
+
+
+def to_name(code: str):
+    try:
+        cnt = pycountry.countries.get(alpha_2=code)
+        return cnt.name
+    except AttributeError:
+        return code

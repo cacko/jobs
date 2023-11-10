@@ -6,6 +6,7 @@ from peewee import (
 )
 from app.database import Database
 from app.routers.models import LocationResponse
+from app.core.country import to_name
 
 
 class Location(DbModel):
@@ -21,6 +22,10 @@ class Location(DbModel):
     def get_or_create(cls, **kwargs):
         kwargs["city"] = cls.get_similar(kwargs["city"], cls.get_cities())
         return super().get_or_create(**kwargs)
+
+    @property
+    def name(self) -> str:
+        return f"{self.city} / {to_name(self.country_iso)}"
 
     def to_json(self):
         return json.dumps(dict(
