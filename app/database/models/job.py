@@ -69,7 +69,7 @@ class Job(DbModel):
 
     def delete_instance(self, recursive=False, delete_nullable=False):
         self.deleted = True
-        self.last_modified = datetime.datetime.now()
+        self.last_modified = datetime.datetime.now(tz=datetime.timezone.utc)
         self.save(only=["deleted", "last_modified"])
 
     def save(self, *args, **kwds):
@@ -79,7 +79,7 @@ class Job(DbModel):
                 Position=self.Position,
                 url=self.url
             ))
-        self.last_modified = datetime.datetime.now()
+        self.last_modified = datetime.datetime.now(tz=datetime.timezone.utc)
         return super().save(*args, **kwds)
 
     @property
