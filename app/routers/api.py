@@ -13,10 +13,10 @@ from app.database.models import (
     Job,
     Event
 )
-from fastapi.responses import JSONResponse
+from app.database.export import to_xlsx
+from fastapi.responses import JSONResponse, FileResponse
 from datetime import datetime
 from .auth import check_auth
-
 
 router = APIRouter()
 
@@ -66,6 +66,17 @@ def get_job(
         return JSONResponse(content=response.model_dump())
     except AssertionError:
         raise HTTPException(404)
+
+
+@router.get("/api/jobs.xlsx", tags=["api"])
+def xlsx_export():
+    xlsx_path = to_xlsx()
+    assert xlsx_path.exists()
+    return FileResponse(
+        path=xlsx_path.as_posix(),
+        filename=xlsx_path.name,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
 
 
 @router.post("/api/artworks", tags=["api"])

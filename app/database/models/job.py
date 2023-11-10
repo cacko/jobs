@@ -42,9 +42,9 @@ class Job(DbModel):
         assert company
         position = kwds.get("Position")
         assert position
-        ad_url = kwds.get("ad_url")
-        assert ad_url
-        return slugify(f"{company.name} {position.name} {ad_url}")
+        url = kwds.get("url")
+        assert url
+        return slugify(f"{company.name} {position.name} {url}")
 
     @classmethod
     def get_or_create(cls, **kwargs):
@@ -77,7 +77,7 @@ class Job(DbModel):
             self.slug = self.__class__.get_slug(**dict(
                 Company=self.Company,
                 Position=self.Position,
-                ad_url=self.ad_url
+                url=self.url
             ))
         self.last_modified = datetime.datetime.now()
         return super().save(*args, **kwds)
