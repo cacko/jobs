@@ -1,7 +1,7 @@
 from pathlib import Path
 import pandas as pd
-from app.database.enums import JobEvent
-from app.database.models import Job, Event
+from jobs.database.enums import JobEvent
+from jobs.database.models import Job, Event
 import rich
 from corefile import TempPath
 from datetime import datetime, timezone

@@ -1,7 +1,7 @@
 from fastapi.exceptions import HTTPException
 from starlette.requests import Request
 from starlette.status import HTTP_403_FORBIDDEN
-from app.firebase.auth import Auth
+from jobs.firebase.auth import Auth
 import logging
 
 

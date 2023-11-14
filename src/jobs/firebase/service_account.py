@@ -1,7 +1,7 @@
 from pathlib import Path
 from firebase_admin import credentials, App, initialize_app
 from typing import Optional
-from app.config import app_config
+from jobs.config import app_config
 
 
 class ServiceAccountMeta(type):

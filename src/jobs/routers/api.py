@@ -8,12 +8,12 @@ from fastapi import (
     File,
     Depends
 )
-from app.database.enums import JobEvent
-from app.database.models import (
+from jobs.database.enums import JobEvent
+from jobs.database.models import (
     Job,
     Event
 )
-from app.database.export import to_xlsx
+from jobs.database.export import to_xlsx
 from fastapi.responses import JSONResponse, FileResponse
 from datetime import datetime
 from .auth import check_auth

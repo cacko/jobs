@@ -1,11 +1,11 @@
 from peewee import CharField, TextField
-from app.core.s3 import S3
+from jobs.core.s3 import S3
 from uuid import uuid4
 from pathlib import Path
 from corefile import TempPath
 from PIL import Image
-from app.routers.models import ImageReponse
-from app.config import app_config
+from jobs.routers.models import ImageReponse
+from jobs.config import app_config
 from .enums import LocationType, Source, JobEvent, JobStatus
 
 CDN_ROOT = (

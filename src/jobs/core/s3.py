@@ -1,6 +1,6 @@
 import boto3
 from pathlib import Path
-from app.config import app_config
+from jobs.config import app_config
 import filetype
 import logging
 

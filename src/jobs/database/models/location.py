@@ -1,11 +1,11 @@
 from functools import lru_cache
 import json
 
-from app.database.fields import CleanCharField
+from jobs.database.fields import CleanCharField
 from .base import DbModel
-from app.database import Database
-from app.routers.models import LocationResponse
-from app.core.country import to_name
+from jobs.database import Database
+from jobs.routers.models import LocationResponse
+from jobs.core.country import to_name
 
 
 class Location(DbModel):

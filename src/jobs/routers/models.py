@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from typing import Optional
 from pydantic import AwareDatetime, BaseModel
 
-from app.database.enums import JobEvent, JobStatus, LocationType, Source
+from jobs.database.enums import JobEvent, JobStatus, LocationType, Source
 
 
 class BaseResponse(BaseModel):

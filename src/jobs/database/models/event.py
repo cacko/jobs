@@ -3,9 +3,9 @@ from peewee import (
     ForeignKeyField,
     DateTimeField
 )
-from app.database import Database
-from app.database.fields import CleanTextField, JobEventField
-from app.routers.models import JobEventResponse
+from jobs.database import Database
+from jobs.database.fields import CleanTextField, JobEventField
+from jobs.routers.models import JobEventResponse
 from datetime import datetime
 from .job import Job
 

@@ -1,0 +1,23 @@
+
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61.0"]
+
+[project]
+authors = [
+  {name = "jobs", email = "alex@cacko.net"},
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+description = "A small jobs package"
+name = "jobs"
+readme = "README.md"
+requires-python = ">=3.11"
+version = "0.1.1"
+
+
+[project.scripts]
+jobs-cli = "jobs.cli:menu"

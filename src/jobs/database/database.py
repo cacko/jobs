@@ -1,6 +1,6 @@
 from playhouse.db_url import parse
 from playhouse.postgres_ext import PostgresqlExtDatabase
-from app.config import app_config
+from jobs.config import app_config
 from typing import Optional
 
 

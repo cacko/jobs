@@ -1,11 +1,11 @@
 import logging
 import questionary
 from contextlib import contextmanager
-from app.database.enums import CV_PATH, JobStatus, LocationType, Source
+from jobs.database.enums import CV_PATH, JobStatus, LocationType, Source
 from pycountry import countries
-from app.database.models.company import Company
-from app.database.models.location import Location
-from app.database.models.position import Position
+from jobs.database.models.company import Company
+from jobs.database.models.location import Location
+from jobs.database.models.position import Position
 from pydantic import BaseModel
 from pathlib import Path
 

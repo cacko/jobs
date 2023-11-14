@@ -4,8 +4,8 @@ from .company import Company
 from .location import Location
 from .position import Position
 from .cv import CV
-from app.database import Database
-from app.database.fields import (
+from jobs.database import Database
+from jobs.database.fields import (
     JobStatusField,
     LocationTypeField,
     SourceField
@@ -17,10 +17,10 @@ from peewee import (
     BooleanField,
     IntegrityError
 )
-from app.config import app_config
+from jobs.config import app_config
 import datetime
 from slugify import slugify
-from app.routers.models import JobResponse
+from jobs.routers.models import JobResponse
 
 
 class Job(DbModel):

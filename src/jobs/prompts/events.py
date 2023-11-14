@@ -1,8 +1,8 @@
 import logging
 import questionary
 from contextlib import contextmanager
-from app.database.enums import JobEvent, JobStatus
-from app.database.models.job import Job
+from jobs.database.enums import JobEvent, JobStatus
+from jobs.database.models.job import Job
 from pydantic import BaseModel
 
 

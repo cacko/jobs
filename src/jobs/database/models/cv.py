@@ -1,7 +1,7 @@
 from typing import Optional
-from app.database import Database
+from jobs.database import Database
 from .base import DbModel
-from app.database.fields import (
+from jobs.database.fields import (
     ImageField,
 )
 from peewee import (
@@ -16,8 +16,8 @@ from playhouse.shortcuts import model_to_dict
 from corefile import TempPath
 from corefile.filepath import file_hash
 from datetime import datetime, timezone
-from app.core.pdf import to_pil
-from app.routers.models import CVResponse
+from jobs.core.pdf import to_pil
+from jobs.routers.models import CVResponse
 
 
 class CV(DbModel):

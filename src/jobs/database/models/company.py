@@ -1,9 +1,9 @@
 from functools import lru_cache
-from app.database.fields import CleanCharField
+from jobs.database.fields import CleanCharField
 
-from app.routers.models import CompanyResponse
+from jobs.routers.models import CompanyResponse
 from .base import DbModel
-from app.database import Database
+from jobs.database import Database
 
 
 class Company(DbModel):

@@ -1,10 +1,10 @@
 from pathlib import Path
 import typer
-from app.database.fields import JobEvent, JobStatus, LocationType, Source
-from app.database.models.position import Position
-from app.main import serve
-from app.database import create_tables
-from app.database.models import (
+from jobs.database.fields import JobEvent, JobStatus
+from jobs.database.models.position import Position
+from jobs.main import serve
+from jobs.database import create_tables
+from jobs.database.models import (
     Company,
     CV,
     Location,
@@ -12,13 +12,13 @@ from app.database.models import (
     Event
 )
 from typing_extensions import Annotated
-from app.core.pdf import to_pil
+from jobs.core.pdf import to_pil
 from coreimage.terminal import get_kitty_image as get_term_image
 import logging
-from app.prompts.jobs import ApplyInput, apply_job_form
-from app.prompts.events import EventInput, add_event_form
+from jobs.prompts.jobs import ApplyInput, apply_job_form
+from jobs.prompts.events import EventInput, add_event_form
 
-from app.core.country import to_iso
+from jobs.core.country import to_iso
 
 cli = typer.Typer()
 
@@ -125,10 +125,15 @@ def event():
         logging.debug(f"Changaing job status to {job.Status}")
 
 
+@cli.command()
+def menu(ctx: typer.Context):
+    pass
+
+
 @cli.callback(invoke_without_command=True)
 def main(ctx: typer.Context):
     if not ctx.invoked_subcommand:
-        ctx.invoke(serve_api)
+        ctx.invoke(menu)
 
 
 if __name__ == '__main__':

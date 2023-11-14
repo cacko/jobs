@@ -3,7 +3,7 @@ from playhouse.shortcuts import model_to_dict
 from humanfriendly.tables import format_robust_table
 from fuzzelinho import extract
 
-from app.routers.models import BaseResponse
+from jobs.routers.models import BaseResponse
 
 
 class DbModel(Model):

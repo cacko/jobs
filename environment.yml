@@ -26,6 +26,7 @@ dependencies:
       - better-exceptions==0.3.3
       - boto3==1.28.77
       - botocore==1.31.77
+      - build==1.0.3
       - cachecontrol==0.13.1
       - cachetools==5.3.2
       - certifi==2023.7.22
@@ -73,6 +74,7 @@ dependencies:
       - olefile==0.46
       - opencv-python==4.8.1.78
       - openpyxl==3.1.2
+      - packaging==23.2
       - pandas==2.1.2
       - peewee==3.17.0
       - pillow==9.5.0
@@ -87,13 +89,13 @@ dependencies:
       - pycparser==2.21
       - pydantic==2.4.2
       - pydantic-core==2.10.1
-      - pydantic-settings==2.0.3
       - pyfiglet==1.0.2
       - pyflakes==3.1.0
       - pygments==2.16.1
       - pyjwt==2.8.0
       - pyparsing==3.1.1
       - pypdfium2==4.23.1
+      - pyproject-hooks==1.0.0
       - python-dateutil==2.8.2
       - python-dotenv==1.0.0
       - python-multipart==0.0.6
@@ -127,4 +129,4 @@ dependencies:
       - watchfiles==0.21.0
       - wcwidth==0.2.9
       - websockets==12.0
-prefix: /Volumes/Devo/Users/jago/mambaforge/envs/jobs
+prefix: /Volumes/Devo/Users/jago/miniforge3/envs/jobs

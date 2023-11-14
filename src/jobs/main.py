@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from .routers import api
 from fastapi.middleware.cors import CORSMiddleware
-from app.config import app_config
+from jobs.config import app_config
 import uvicorn
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path

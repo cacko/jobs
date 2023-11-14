@@ -1,6 +1,6 @@
-from app.database.fields import CleanCharField
+from jobs.database.fields import CleanCharField
 from .base import DbModel
-from app.database import Database
+from jobs.database import Database
 from functools import lru_cache
 
 
