@@ -17,19 +17,35 @@ CDN_ROOT = (
 class CleanCharField(CharField):
 
     def db_value(self, value):
-        return super().db_value(value).strip()
+        try:
+            assert value
+            return super().db_value(value).strip()
+        except AssertionError:
+            return super().db_value(value)
 
     def python_value(self, value):
-        return super().python_value(value).strip()
+        try:
+            assert value
+            return super().python_value(value).strip()
+        except AssertionError:
+            return super().python_value(value)
 
 
 class CleanTextField(TextField):
 
     def db_value(self, value):
-        return super().db_value(value).strip()
+        try:
+            assert value
+            return super().db_value(value).strip()
+        except AssertionError:
+            return super().db_value(value)
 
     def python_value(self, value):
-        return super().python_value(value).strip()
+        try:
+            assert value
+            return super().python_value(value).strip()
+        except AssertionError:
+            return super().python_value(value)
 
 
 class LocationTypeField(CharField):
