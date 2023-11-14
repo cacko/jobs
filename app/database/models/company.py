@@ -1,16 +1,14 @@
 from functools import lru_cache
+from app.database.fields import CleanCharField
 
 from app.routers.models import CompanyResponse
 from .base import DbModel
-from peewee import (
-    CharField
-)
 from app.database import Database
 
 
 class Company(DbModel):
-    name = CharField(unique=True)
-    url = CharField(null=True)
+    name = CleanCharField(unique=True)
+    url = CleanCharField(null=True)
 
     @classmethod
     @lru_cache()

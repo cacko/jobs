@@ -1,17 +1,16 @@
 from functools import lru_cache
 import json
+
+from app.database.fields import CleanCharField
 from .base import DbModel
-from peewee import (
-    CharField
-)
 from app.database import Database
 from app.routers.models import LocationResponse
 from app.core.country import to_name
 
 
 class Location(DbModel):
-    country_iso = CharField(max_length=2, default="UK")
-    city = CharField()
+    country_iso = CleanCharField(max_length=2, default="UK")
+    city = CleanCharField()
 
     @classmethod
     @lru_cache()

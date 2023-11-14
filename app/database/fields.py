@@ -1,4 +1,4 @@
-from peewee import CharField
+from peewee import CharField, TextField
 from app.core.s3 import S3
 from uuid import uuid4
 from pathlib import Path
@@ -12,6 +12,24 @@ CDN_ROOT = (
     f"https://{app_config.aws.cloudfront_host}"
     f"/{app_config.aws.media_location}"
 )
+
+
+class CleanCharField(CharField):
+
+    def db_value(self, value):
+        return super().db_value(value).strip()
+
+    def python_value(self, value):
+        return super().python_value(value).strip()
+
+
+class CleanTextField(TextField):
+
+    def db_value(self, value):
+        return super().db_value(value).strip()
+
+    def python_value(self, value):
+        return super().python_value(value).strip()
 
 
 class LocationTypeField(CharField):

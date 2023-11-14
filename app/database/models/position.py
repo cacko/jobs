@@ -1,13 +1,11 @@
+from app.database.fields import CleanCharField
 from .base import DbModel
-from peewee import (
-    CharField
-)
 from app.database import Database
 from functools import lru_cache
 
 
 class Position(DbModel):
-    name = CharField(unique=True)
+    name = CleanCharField(unique=True)
 
     @classmethod
     @lru_cache()
