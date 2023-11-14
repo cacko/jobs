@@ -21,7 +21,7 @@ class Event(DbModel):
     def to_response(self, **kwds):
         return JobEventResponse(
             event=self.Event,
-            description=self.description,
+            description=self.description.strip(),
             timestamp=self.timestamp
         )
 
