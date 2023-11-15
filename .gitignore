@@ -162,3 +162,4 @@ cython_debug/
 t.py
 setttings.yml
 jobs./xlsx
+*.whl
