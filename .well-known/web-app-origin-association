@@ -1,0 +1,16 @@
+{
+    "web_apps": [
+        {
+            "manifest": "https://jobs.cacko.net/manifest.webmanifest",
+            "details": {
+                "paths": [
+                    "/*"
+                ],
+                "exclude_paths": [
+                    "/api",
+                    "/about"
+                ]
+            }
+        }
+    ]
+}
