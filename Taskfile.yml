@@ -61,7 +61,7 @@ tasks:
     desc: systemd exec
     dir: src/
     cmds:
-      - direnv exec . mamba run --live-stream -n {{.PROJECT}} python -m {{.PROJECT}}.cli serve_api
+      - direnv exec . mamba run --live-stream -n {{.PROJECT}} python -m {{.PROJECT}}.cli serve-api
 
   export:
     desc: export env
