@@ -49,3 +49,10 @@ class JobEvent(Choices, StrEnum):
     INTERVIEW = "interview"
     RESPONSE = "response"
     REJECT = "reject"
+
+
+class EntityGroup(Choices, StrEnum):
+    TECHNICAL = "TECHNICAL"
+    BUSINESS = "BUS"
+    TECHNOLOGY = "TECHNOLOGY"
+    SOFT = "SOFT"

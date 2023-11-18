@@ -48,11 +48,17 @@ class AWSConfig(BaseModel):
     media_location: str
 
 
+class MashaConfig(BaseModel):
+    host: str
+    port: int
+
+
 class Settings(BaseModel):
     db: DbConfig
     api: ApiConfig
     aws: AWSConfig
     firebase: FirebaseConfig
+    masha: MashaConfig
 
 
 data = yaml.full_load(config_file.read_text())

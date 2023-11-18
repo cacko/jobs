@@ -6,7 +6,7 @@ from corefile import TempPath
 from PIL import Image
 from jobs.routers.models import ImageReponse
 from jobs.config import app_config
-from .enums import LocationType, Source, JobEvent, JobStatus
+from .enums import EntityGroup, LocationType, Source, JobEvent, JobStatus
 
 CDN_ROOT = (
     f"https://{app_config.aws.cloudfront_host}"
@@ -82,6 +82,15 @@ class JobEventField(CharField):
 
     def python_value(self, value):
         return JobEvent(value)
+
+
+class EntityGroupField(CharField):
+
+    def db_value(self, value: EntityGroup):
+        return value.value
+
+    def python_value(self, value):
+        return EntityGroup(value)
 
 
 class ImageFieldMeta(type):

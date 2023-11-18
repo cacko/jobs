@@ -15,9 +15,12 @@ from typing_extensions import Annotated
 from jobs.core.pdf import to_pil
 from coreimage.terminal import get_kitty_image as get_term_image
 import logging
+from jobs.masha.skills import Skills
 from jobs.prompts.jobs import ApplyInput, apply_job_form
 from jobs.prompts.events import EventInput, add_event_form
-
+from jobs.prompts.job import JobInput, select_job_form
+from itertools import groupby
+from humanfriendly.tables import format_robust_table
 from jobs.core.country import to_iso
 
 cli = typer.Typer()
@@ -30,7 +33,11 @@ def serve_api():
 
 @cli.command()
 def init_db():
-    create_tables()
+    try:
+        assert typer.confirm("Dropping all data?")
+        create_tables(drop=True)
+    except AssertionError:
+        logging.info("ignored")
 
 
 @cli.command()
@@ -123,6 +130,22 @@ def event():
                 job.Status = JobStatus.IN_PROGRESS
         job.save()
         logging.debug(f"Changaing job status to {job.Status}")
+
+
+@cli.command()
+def tokens():
+    with select_job_form() as form:
+        ans = form.ask()
+        input = JobInput(**ans)
+        job: Job = Job.get(Job.slug == input.job_id)
+        apply: Event = Event.get(Event.Job == job, Event.Event == JobEvent.APPLIED)
+        skills = sorted(Skills(apply.description).result, key=lambda s: s.entity_group)
+        columns = []
+        row = []
+        for k, g in groupby(skills, key=lambda s: s.entity_group):
+            columns.append(k)
+            row.append(",".join(set([t.word for t in g])))
+        print(format_robust_table([row], columns))
 
 
 @cli.command()

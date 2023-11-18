@@ -1,4 +1,6 @@
 from typing import Optional
+
+from jobs.database.models.skill import Skill
 from .base import DbModel
 from .company import Company
 from .location import Location
@@ -15,7 +17,8 @@ from peewee import (
     DateTimeField,
     ForeignKeyField,
     BooleanField,
-    IntegrityError
+    IntegrityError,
+    ManyToManyField
 )
 from jobs.config import app_config
 import datetime
@@ -31,6 +34,7 @@ class Job(DbModel):
     CV = ForeignKeyField(CV)
     Status = JobStatusField()
     Position = ForeignKeyField(Position)
+    skills = ManyToManyField(Skill, backref='jobs', null=True)
     url = CharField()
     last_modified = DateTimeField(default=datetime.datetime.now)
     slug = CharField(unique=True)

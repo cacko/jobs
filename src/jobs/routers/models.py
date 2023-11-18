@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from typing import Optional
 from pydantic import AwareDatetime, BaseModel
 
-from jobs.database.enums import JobEvent, JobStatus, LocationType, Source
+from jobs.database.enums import EntityGroup, JobEvent, JobStatus, LocationType, Source
 
 
 class BaseResponse(BaseModel):
@@ -21,6 +21,11 @@ class BaseResponse(BaseModel):
 class CompanyResponse(BaseResponse):
     name: str
     url: Optional[str] = None
+
+
+class SkillResponse(BaseResponse):
+    name: str
+    group: EntityGroup
 
 
 class ImageReponse(BaseResponse):
