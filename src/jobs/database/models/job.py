@@ -34,7 +34,7 @@ class Job(DbModel):
     CV = ForeignKeyField(CV)
     Status = JobStatusField()
     Position = ForeignKeyField(Position)
-    skills = ManyToManyField(Skill, backref='jobs', null=True)
+    skills = ManyToManyField(Skill, backref='jobs')
     url = CharField()
     last_modified = DateTimeField(default=datetime.datetime.now)
     slug = CharField(unique=True)
