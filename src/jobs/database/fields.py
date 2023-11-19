@@ -19,14 +19,14 @@ class CleanCharField(CharField):
     def db_value(self, value):
         try:
             assert value
-            return super().db_value(value).strip()
+            return super().db_value(value.strip())
         except AssertionError:
             return super().db_value(value)
 
     def python_value(self, value):
         try:
             assert value
-            return super().python_value(value).strip()
+            return super().python_value(value.strip())
         except AssertionError:
             return super().python_value(value)
 
@@ -36,14 +36,14 @@ class CleanTextField(TextField):
     def db_value(self, value):
         try:
             assert value
-            return super().db_value(value).strip()
+            return super().db_value(value.strip())
         except AssertionError:
             return super().db_value(value)
 
     def python_value(self, value):
         try:
             assert value
-            return super().python_value(value).strip()
+            return super().python_value(value.strip())
         except AssertionError:
             return super().python_value(value)
 

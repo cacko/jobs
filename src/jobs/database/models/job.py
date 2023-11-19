@@ -1,5 +1,7 @@
 from typing import Optional
 
+from yaml import Token
+
 from jobs.database.models.skill import Skill
 from .base import DbModel
 from .company import Company
@@ -51,7 +53,7 @@ class Job(DbModel):
         return slugify(f"{company.name} {position.name} {url}")
 
     @classmethod
-    def get_or_create(cls, **kwargs):
+    def get_or_create(cls, **kwargs) -> tuple['Job', bool]:
         defaults = kwargs.pop('defaults', {})
         query = cls.select()
         slug = cls.get_slug(**kwargs)
@@ -111,6 +113,14 @@ class Job(DbModel):
             skills=[s.to_response() for s in self.skills],
             **kwds
         )
+
+    def add_skills(self, tokens: list[Token]):
+        self.skills.clear()
+        new_skills = [Skill.get_or_create(
+            Group=token.entity_group,
+            name=token.word
+        )[0] for token in tokens]
+        self.skills.add(new_skills)
 
     class Meta:
         database = Database.db

@@ -23,11 +23,13 @@ router = APIRouter()
 
 def get_list_response(
     page: int = 1,
-    limit: int = 20,
-    last_modified: Optional[float] = None
+    limit: int = 50,
+    last_modified: Optional[datetime] = None
 ):
     results = []
     filters = [Event.Event == JobEvent.APPLIED]
+    if last_modified:
+        filters.append(Job.last_modified > last_modified)
     # order_by = []
 
     base_query = Event.select().join_from(Event, Job)
