@@ -2,7 +2,7 @@ from .company import Company
 from .cv import CV
 from .location import Location
 from .event import Event
-from .job import Job
+from .job import Job, JobSkill
 from .position import Position
 from .skill import Skill
 
@@ -13,5 +13,6 @@ __all__ = [
     "Event",
     "Job",
     "Position",
-    "Skill"
+    "Skill",
+    "JobSkill"
 ]

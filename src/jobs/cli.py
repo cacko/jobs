@@ -1,7 +1,9 @@
 from pathlib import Path
+import rich
 import typer
 from jobs.database.fields import JobEvent, JobStatus
 from jobs.database.models.position import Position
+from jobs.database.models.skill import Skill
 from jobs.main import serve
 from jobs.database import create_tables
 from jobs.database.models import (
@@ -144,8 +146,25 @@ def tokens():
         row = []
         for k, g in groupby(skills, key=lambda s: s.entity_group):
             columns.append(k)
-            row.append(",".join(set([t.word for t in g])))
+            row.append(",".join([t.word for t in g]))
         print(format_robust_table([row], columns))
+        if typer.confirm("update skills?"):
+            job.skills.clear()
+            new_skills = [Skill.get_or_create(
+                Group=token.entity_group,
+                name=token.word
+            )[0] for token in skills]
+            rich.print(new_skills)
+            job.skills.add(new_skills)
+
+
+@cli.command()
+def job():
+    with select_job_form() as form:
+        ans = form.ask()
+        input = JobInput(**ans)
+        job: Job = Job.get(Job.slug == input.job_id)
+        rich.print(job.to_response())
 
 
 @cli.command()

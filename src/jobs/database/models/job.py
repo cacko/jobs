@@ -1,6 +1,7 @@
 from typing import Optional
 
 from jobs.database.models.skill import Skill
+from jobs.masha import skills
 from .base import DbModel
 from .company import Company
 from .location import Location
@@ -83,7 +84,8 @@ class Job(DbModel):
                 Position=self.Position,
                 url=self.url
             ))
-        self.last_modified = datetime.datetime.now(tz=datetime.timezone.utc)
+        if 'only' not in kwds:
+            self.last_modified = datetime.datetime.now(tz=datetime.timezone.utc)
         return super().save(*args, **kwds)
 
     @property
@@ -107,6 +109,7 @@ class Job(DbModel):
             onsite=self.OnSiteRemote,
             source=self.Source,
             url=self.url,
+            skills=[s.to_response() for s in self.skills],
             **kwds
         )
 
@@ -114,3 +117,6 @@ class Job(DbModel):
         database = Database.db
         table_name = 'jobs_job'
         order_by = ["-last_modified"]
+
+
+JobSkill = Job.skills.get_through_model()

@@ -65,3 +65,4 @@ class JobResponse(BaseResponse):
     source: Source
     url: str
     events: Optional[list[JobEventResponse]] = None
+    skills: Optional[list[SkillResponse]] = None
