@@ -1,7 +1,6 @@
 from typing import Optional
 
 from jobs.database.models.skill import Skill
-from jobs.masha import skills
 from .base import DbModel
 from .company import Company
 from .location import Location
