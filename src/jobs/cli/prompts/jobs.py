@@ -8,7 +8,7 @@ from jobs.database.models.location import Location
 from jobs.database.models.position import Position
 from pydantic import BaseModel
 from pathlib import Path
-
+from . import THEME
 
 class ApplyInput(BaseModel):
     company: str
@@ -32,7 +32,7 @@ def apply_job_form():
 
     form = questionary.form(
         company=questionary.autocomplete(
-            "Company", choices=Company.get_names()),
+            "Company", choices=Company.get_names(), style=THEME),
         position=questionary.autocomplete(
             "Position", choices=Position.get_names()),
         city=questionary.autocomplete(
