@@ -3,7 +3,7 @@ import questionary
 from contextlib import contextmanager
 from jobs.database.enums import JobEvent, JobStatus
 from jobs.database.models.job import Job
-from pydantic import BaseModel
+from pydantic import BaseModel, NonNegativeInt
 
 
 class EventInput(BaseModel):
@@ -25,10 +25,12 @@ def add_event_form():
         job_id=questionary.select(
             "Job",
             choices=jobs_choices,
+            use_shortcuts=True
         ),
         event=questionary.select(
             "Event",
             choices=JobEvent.values(),
+            use_shortcuts=True
         ),
         description=questionary.text(
             "Description",
@@ -37,7 +39,7 @@ def add_event_form():
     )
     try:
         yield form
-    except Exception as e:
-        logging.exception(e)
+    except KeyboardInterrupt:
+        return None
     finally:
         return None

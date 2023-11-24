@@ -12,21 +12,15 @@ class JobInput(BaseModel):
 @contextmanager
 def select_job_form():
     jobs_choices = [
-        questionary.Choice(
-            title=job.job_name,
-            value=job.slug
-        ) for job in Job.select()
+        questionary.Choice(title=job.job_name, value=job.slug) for job in Job.select()
     ]
 
     form = questionary.form(
-        job_id=questionary.select(
-            "Job",
-            choices=jobs_choices,
-        )
+        job_id=questionary.select("Job", choices=jobs_choices, use_shortcuts=True)
     )
     try:
         yield form
-    except Exception as e:
-        logging.exception(e)
+    except KeyboardInterrupt:
+        return None
     finally:
         return None
