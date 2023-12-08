@@ -44,7 +44,7 @@ def get_list_response(
 @router.get("/api/jobs", tags=["api"])
 def list_jobs(
     page: int = 1,
-    limit: int = 20,
+    limit: int = 30,
     last_modified: Optional[datetime] = None,
     auth_user=Depends(check_auth)
 ):
