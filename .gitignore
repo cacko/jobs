@@ -163,3 +163,4 @@ t.py
 settings.yaml
 jobs./xlsx
 *.whl
+app/settings.yaml
