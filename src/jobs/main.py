@@ -46,4 +46,4 @@ def serve():
         bind=f"{app_config.api.host}:{app_config.api.port}",
         worker_class="trio"
     )
-    asyncio.run(serve(create_app(), server_config))
+    asyncio.run(hyper_serve(create_app(), server_config))
