@@ -2,7 +2,9 @@ from fastapi import FastAPI
 from .routers import api
 from fastapi.middleware.cors import CORSMiddleware
 from jobs.config import app_config
-import uvicorn
+import asyncio
+from hypercorn.config import Config
+from hypercorn.asyncio import serve as hyper_serve
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 
@@ -14,22 +16,17 @@ def create_app():
         title="jobs@cacko.net",
         docs_url="/api/docs",
         openapi_url="/api/openapi.json",
-        redoc_url="/api/redoc"
+        redoc_url="/api/redoc",
     )
 
-    origins = [
-        "http://localhost:4200",
-        "https://jobs.cacko.net"
-    ]
+    origins = ["http://localhost:4200", "https://jobs.cacko.net"]
 
     assets_path = Path(app_config.api.assets)
     if not assets_path.exists():
         assets_path.mkdir(parents=True, exist_ok=True)
 
     app.mount(
-        "/api/assets",
-        StaticFiles(directory=assets_path.as_posix()),
-        name="assets"
+        "/api/assets", StaticFiles(directory=assets_path.as_posix()), name="assets"
     )
 
     app.add_middleware(
@@ -37,7 +34,7 @@ def create_app():
         allow_origins=origins,
         allow_credentials=True,
         allow_methods=["*"],
-        allow_headers=("x-user-token",),
+        allow_headers=["*"],
     )
 
     app.include_router(api.router)
@@ -45,13 +42,8 @@ def create_app():
 
 
 def serve():
-    server_config = uvicorn.Config(
-        app=create_app,
-        host=app_config.api.host,
-        port=app_config.api.port,
-        workers=app_config.api.workers,
-        factory=True,
-        reload=True
+    server_config = Config.from_mapping(
+        bind=f"{app_config.api.host}:{app_config.api.port}",
+        worker_class="trio"
     )
-    server = uvicorn.Server(server_config)
-    server.run()
+    asyncio.run(serve(create_app(), server_config))
