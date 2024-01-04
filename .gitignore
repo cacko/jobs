@@ -160,6 +160,6 @@ cython_debug/
 #.idea/
 .envrc
 t.py
-setttings.yml
+settings.yaml
 jobs./xlsx
 *.whl
