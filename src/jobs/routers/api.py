@@ -46,7 +46,7 @@ def list_jobs(
     page: int = 1,
     limit: int = 30,
     last_modified: Optional[datetime] = None,
-    # auth_user=Depends(check_auth)
+    auth_user=Depends(check_auth)
 ):
     return get_list_response(
         page=page,
@@ -58,7 +58,7 @@ def list_jobs(
 @router.get("/api/job/{slug}", tags=["api"])
 def get_job(
     slug: str,
-    # auth_user=Depends(check_auth)
+    auth_user=Depends(check_auth)
 ):
     try:
         job: Job = Job.select(Job).where(Job.slug == slug).get()
