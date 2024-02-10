@@ -35,6 +35,7 @@ def create_app():
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
+        expose_headers=["x-pagination-page", "x-pagination-total", "x-pagination-next"],
     )
 
     app.include_router(api.router)
@@ -43,7 +44,6 @@ def create_app():
 
 def serve():
     server_config = Config.from_mapping(
-        bind=f"{app_config.api.host}:{app_config.api.port}",
-        worker_class="trio"
+        bind=f"{app_config.api.host}:{app_config.api.port}", worker_class="trio"
     )
     asyncio.run(hyper_serve(create_app(), server_config))
