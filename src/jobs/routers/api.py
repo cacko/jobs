@@ -1,5 +1,7 @@
 import logging
+from math import ceil, floor
 from typing import Optional
+from urllib.parse import urlencode
 from fastapi import (
     APIRouter,
     HTTPException,
@@ -17,6 +19,7 @@ from jobs.database.export import to_xlsx
 from fastapi.responses import JSONResponse, FileResponse
 from datetime import datetime
 from .auth import check_auth
+from jobs.config import app_config
 
 router = APIRouter()
 
@@ -34,11 +37,41 @@ def get_list_response(
 
     base_query = Event.select().join_from(Event, Job)
     query = base_query.where(*filters)
-
+    total = query.count()
+    if total > 0:
+        page = min(max(1, page), floor(total / limit) + 1)
     results = [event.Job.to_response(events=[event.to_response()]).model_dump()
                for event in query.paginate(page, limit)]
     logging.debug(results)
-    return JSONResponse(content=results)
+    headers = {
+        "x-pagination-total": f"{total}",
+        "x-pagination-page": f"{page}",
+    }
+    
+    def get_next_url(
+        page: int,
+        total: int,
+        limit: int
+    ):
+        try:
+            last_page = ceil(total/limit)
+            page += 1
+            assert last_page + 1 > page
+            params = {k: v for k, v in dict(
+                page=page,
+                limit=limit,
+            ).items() if v}
+            return f"{app_config.api.web_host}/api/jobs?{urlencode(params)}"
+        except AssertionError:
+            return None
+    
+    if next_url := get_next_url(
+            total=total,
+            page=page,
+            limit=limit,
+    ):
+        headers["x-pagination-next"] = next_url
+    return JSONResponse(content=results, headers=headers)
 
 
 @router.get("/api/jobs", tags=["api"])
