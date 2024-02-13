@@ -1,5 +1,5 @@
 __name__ = "jobs"
-__version__ = "0.2.5"
+__version__ = "0.2.6"
 
 import corelog
 import os
