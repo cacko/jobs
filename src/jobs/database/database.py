@@ -24,7 +24,7 @@ class DatabaseMeta(type):
         return cls._instance
 
     @property
-    def db(cls) -> ReconnectingDBcd :
+    def db(cls) -> ReconnectingDB :
         return cls().get_db()
 
 
