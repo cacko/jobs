@@ -2,7 +2,7 @@ from playhouse.db_url import parse
 from playhouse.postgres_ext import PostgresqlExtDatabase
 from jobs.config import app_config
 from typing import Optional, Any
-from psycopg2 import OperationalError
+from peewee import OperationalError
 
 
 class ReconnectingDB(PostgresqlExtDatabase):
@@ -11,7 +11,6 @@ class ReconnectingDB(PostgresqlExtDatabase):
         try:
             return super().execute_sql(sql, params, commit)
         except OperationalError as e:
-            print(e)
             raise RuntimeError
 
 
