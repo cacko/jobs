@@ -28,7 +28,7 @@ class Source(Choices, StrEnum):
         return [member.value for member in cls.__members__.values()]
 
     @classmethod
-    def to_categories(cls, values: list[str]) -> list['Source']:
+    def to_categories(cls, values: list[str]) -> list["Source"]:
         return [cls(x.lower()) for x in values if x.lower() in cls.values()]
 
 
@@ -41,15 +41,17 @@ class LocationType(Choices, StrEnum):
 class JobStatus(Choices, StrEnum):
     PENDING = "pending"
     REJECTED = "rejected"
+    EXPIRED = "expired"
     IN_PROGRESS = "in_progress"
 
 
 class JobEvent(Choices, StrEnum):
     APPLIED = "applied"
     INTERVIEW = "interview"
-    TEST="test"
+    TEST = "test"
     RESPONSE = "response"
     REJECT = "reject"
+    EXPIRED = "expired"
 
 
 class EntityGroup(Choices, StrEnum):

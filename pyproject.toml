@@ -1,7 +1,7 @@
 
 [build-system]
 build-backend = "setuptools.build_meta"
-requires = ["setuptools>=61.0"]
+requires = ["setuptools"]
 
 [project]
 authors = [
@@ -129,4 +129,4 @@ dependencies = [
 jobs-cli = "jobs.cli:cli"
 
 [tool.setuptools.dynamic]
-version = {attr = "jobs.__version__"}
+version = {file = "version"}

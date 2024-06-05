@@ -15,27 +15,18 @@ class EventInput(BaseModel):
 @contextmanager
 def add_event_form():
     jobs_choices = [
-        questionary.Choice(
-            title=job.job_name,
-            value=job.slug
-        ) for job in Job.select().where([Job.Status != JobStatus.REJECTED])
+        questionary.Choice(title=job.job_name, value=job.slug)
+        for job in Job.select().where(
+            [Job.Status not in [JobStatus.REJECTED, JobStatus.EXPIRED]]
+        )
     ]
 
     form = questionary.form(
-        job_id=questionary.select(
-            "Job",
-            choices=jobs_choices,
-            use_shortcuts=True
-        ),
+        job_id=questionary.select("Job", choices=jobs_choices, use_shortcuts=True),
         event=questionary.select(
-            "Event",
-            choices=JobEvent.values(),
-            use_shortcuts=True
+            "Event", choices=JobEvent.values(), use_shortcuts=True
         ),
-        description=questionary.text(
-            "Description",
-            multiline=True
-        ),
+        description=questionary.text("Description", multiline=True),
     )
     try:
         yield form
