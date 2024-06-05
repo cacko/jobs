@@ -18,7 +18,13 @@ from .prompts.jobs import ApplyInput, apply_job_form
 from .prompts.events import EventInput, add_event_form
 from .prompts.job import JobInput, select_job_form
 from jobs.core.country import to_iso
-from jobs.cli.commands.job import cmd_apply, cmd_event, cmd_tokens, cmd_expire
+from jobs.cli.commands.job import (
+    cmd_apply,
+    cmd_event,
+    cmd_tokens,
+    cmd_expire,
+    cmd_auto_expire,
+)
 
 cli = typer.Typer()
 
@@ -76,6 +82,12 @@ def expire():
 
 
 @cli.command()
+def auto_expire():
+    cmd_auto_expire()
+    questionary.press_any_key_to_continue().ask()
+
+
+@cli.command()
 def event():
     with add_event_form() as form:
         ans = form.ask()
@@ -115,12 +127,16 @@ def menu(ctx: typer.Context):
             questionary.Choice(title="Expire a job", value=expire),
             questionary.Choice(title="Dump job", value=job),
             questionary.Choice(title="Process tokens", value=tokens),
+            questionary.Choice(title="Auto expire", value=cmd_auto_expire),
             questionary.Choice(title="Exit", value=quit),
         ]
         choice = None
+        select = questionary.select(
+            message="Main menu", choices=menu_choices, use_shortcuts=True
+        )
         while True:
             typer.clear()
-            choice = questionary.select(message="Main menu", choices=menu_choices).ask()
+            choice = select.ask()
             ctx.invoke(choice)
             questionary.press_any_key_to_continue().ask()
     except typer.Exit:

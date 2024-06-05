@@ -1,5 +1,4 @@
 import logging
-
 import typer
 from jobs.cli.prompts.events import EventInput
 from jobs.cli.prompts.job import JobInput
@@ -14,6 +13,7 @@ from jobs.database.models.location import Location
 from jobs.database.models.position import Position
 from jobs.database.models.skill import Skill
 from jobs.masha.skills import Skills
+from datetime import datetime, timezone, timedelta
 
 
 def cmd_apply(input: ApplyInput):
@@ -90,3 +90,21 @@ def cmd_expire(input: JobInput):
     logging.info(f"{event} created={created}")
     job.Status = JobStatus.EXPIRED
     job.save()
+    
+def cmd_auto_expire():
+    threshold_delta = timedelta(weeks=8)
+    threshold = datetime.now(tz=timezone.utc) - threshold_delta
+    query = Job.select().where(*[
+        Job.Status == JobStatus.PENDING,
+        Job.last_modified < threshold
+    ])
+    for job in query:
+        Event.get_or_create(
+            Job=job,
+            Event=JobEvent.EXPIRED,
+            description="Lack of response"
+        )
+        logging.info(f"{job.job_name} expired")
+        job.Status = JobStatus.EXPIRED
+        job.save()
+
