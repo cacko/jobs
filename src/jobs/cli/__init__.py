@@ -18,7 +18,7 @@ from .prompts.jobs import ApplyInput, apply_job_form
 from .prompts.events import EventInput, add_event_form
 from .prompts.job import JobInput, select_job_form
 from jobs.core.country import to_iso
-from jobs.cli.commands.job import cmd_apply, cmd_event, cmd_tokens
+from jobs.cli.commands.job import cmd_apply, cmd_event, cmd_tokens, cmd_expire
 
 cli = typer.Typer()
 
@@ -68,6 +68,14 @@ def apply():
 
 
 @cli.command()
+def expire():
+    with select_job_form() as form:
+        ans = form.ask()
+        input = JobInput(**ans)
+        cmd_expire(input=input)
+
+
+@cli.command()
 def event():
     with add_event_form() as form:
         ans = form.ask()
@@ -104,6 +112,7 @@ def menu(ctx: typer.Context):
         menu_choices = [
             questionary.Choice(title="Apply for job", value=apply),
             questionary.Choice(title="Add timeline event", value=event),
+            questionary.Choice(title="Expire a job", value=expire),
             questionary.Choice(title="Dump job", value=job),
             questionary.Choice(title="Process tokens", value=tokens),
             questionary.Choice(title="Exit", value=quit),
@@ -111,9 +120,7 @@ def menu(ctx: typer.Context):
         choice = None
         while True:
             typer.clear()
-            choice = questionary.select(
-                message="Main menu", choices=menu_choices, use_shortcuts=True
-            ).ask()
+            choice = questionary.select(message="Main menu", choices=menu_choices).ask()
             ctx.invoke(choice)
             questionary.press_any_key_to_continue().ask()
     except typer.Exit:

@@ -79,3 +79,14 @@ def cmd_tokens(input: JobInput):
     Skill.print(skills)
     if typer.confirm("update skills?"):
         job.add_skills(tokens=skills)
+
+def cmd_expire(input: JobInput):
+    job: Job = Job.get(Job.slug == input.job_id)
+    event, created = Event.get_or_create(
+        Job=job,
+        Event=JobEvent.EXPIRED,
+        description="Lack of response"
+    )
+    logging.info(f"{event} created={created}")
+    job.Status = JobStatus.EXPIRED
+    job.save()

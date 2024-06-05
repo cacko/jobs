@@ -43,7 +43,6 @@ def apply_job_form():
             "Status",
             choices=JobStatus.values(),
             default=JobStatus.PENDING.value,
-            use_shortcuts=True,
         ),
         country=questionary.autocomplete(
             "Country", choices=[cnt.name for cnt in countries], default="United Kingdom"
@@ -52,13 +51,11 @@ def apply_job_form():
             "Source",
             choices=Source.values(),
             default=Source.LINKEDIN.value,
-            use_shortcuts=True,
         ),
         site=questionary.select(
             "OnSite/Remote",
             choices=LocationType.values(),
             default=LocationType.HYBRID.value,
-            use_shortcuts=True,
         ),
     )
     try:

@@ -8,7 +8,6 @@ THEME = Style([
     ('highlighted', 'fg:#673ab7 bold'),  # pointed-at choice in select and checkbox prompts
     ('selected', 'fg:#cc5454'),         # style for a selected item of a checkbox
     ('separator', 'fg:#cc5454'),        # separator in lists
-    ('instruction', ''),                # user instructions for select, rawselect, checkbox
     ('text', ''),                       # plain text
     ('disabled', 'fg:#858585 italic')   # disabled choices for select and checkbox prompts
 ])
