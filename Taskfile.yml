@@ -92,8 +92,12 @@ tasks:
 
   build:
     desc: build
+    vars:
+      JOBS_VERSION:
+        sh: cat version
     cmds:
       - rm -rf dist/*
+      - semver next patch {{.JOBS_VERSION}} > version
       - mamba run --live-stream -n {{.PROJECT}} python  -m build
 
   publish:
