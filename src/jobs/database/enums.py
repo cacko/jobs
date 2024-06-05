@@ -47,6 +47,7 @@ class JobStatus(Choices, StrEnum):
 class JobEvent(Choices, StrEnum):
     APPLIED = "applied"
     INTERVIEW = "interview"
+    TEST="test"
     RESPONSE = "response"
     REJECT = "reject"
 
