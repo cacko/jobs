@@ -27,24 +27,30 @@ dependencies:
       - autopep8==2.0.4
       - beautifulsoup4==4.12.3
       - better-exceptions==0.3.3
+      - blis==0.7.11
       - boto3==1.34.42
       - botocore==1.34.42
       - bs4==0.0.2
       - build==1.0.3
       - cachecontrol==0.14.0
       - cachetools==5.3.2
+      - catalogue==2.0.10
       - certifi==2024.2.2
       - cffi==1.16.0
       - charset-normalizer==3.3.2
       - click==8.1.7
+      - cloudpathlib==0.18.1
       - colorama==0.4.6
+      - confection==0.1.5
       - contourpy==1.2.0
       - corefile==0.1.6
       - coreimage==0.0.137
       - corelog==0.0.19
-      - corestring==0.3.9
+      - corestring==0.3.15
       - cryptography==42.0.2
       - cycler==0.12.1
+      - cymem==2.0.8
+      - cytoolz==0.12.3
       - dnspython==2.6.1
       - einops==0.7.0
       - email-validator==2.1.1
@@ -56,24 +62,25 @@ dependencies:
       - fastapi-cli==0.0.4
       - filelock==3.13.1
       - filetype==1.2.0
-      - firebase-admin==6.4.0
+      - firebase-admin==6.5.0
       - flake8==7.0.0
       - flatbuffers==23.5.26
+      - floret==0.10.5
       - fonttools==4.48.1
       - fs==2.4.16
       - fsspec==2024.2.0
       - futures==3.0.5
       - fuzzelinho==0.2.8
-      - google-api-core==2.17.1
-      - google-api-python-client==2.118.0
-      - google-auth==2.27.0
+      - google-api-core==2.19.0
+      - google-api-python-client==2.132.0
+      - google-auth==2.29.0
       - google-auth-httplib2==0.2.0
       - google-cloud-core==2.4.1
-      - google-cloud-firestore==2.14.0
-      - google-cloud-storage==2.14.0
+      - google-cloud-firestore==2.16.0
+      - google-cloud-storage==2.16.0
       - google-crc32c==1.5.0
       - google-resumable-media==2.7.0
-      - googleapis-common-protos==1.62.0
+      - googleapis-common-protos==1.63.1
       - goslate==1.5.4
       - grpcio==1.60.1
       - grpcio-status==1.60.1
@@ -88,10 +95,15 @@ dependencies:
       - humanfriendly==10.0
       - hyperframe==6.0.1
       - idna==3.6
+      - jellyfish==1.0.4
       - jinja2==3.1.3
       - jmespath==1.0.1
+      - joblib==1.4.2
       - kiwisolver==1.4.5
+      - langcodes==3.4.0
+      - language-data==1.2.0
       - levenshtein==0.25.0
+      - marisa-trie==1.1.1
       - markdown-it-py==3.0.0
       - markupsafe==2.1.5
       - matplotlib==3.8.2
@@ -99,6 +111,7 @@ dependencies:
       - mdurl==0.1.2
       - mpmath==1.3.0
       - msgpack==1.0.7
+      - murmurhash==1.0.10
       - networkx==3.2.1
       - numpy==1.26.4
       - olefile==0.47
@@ -111,10 +124,11 @@ dependencies:
       - pandas==2.2.0
       - peewee==3.17.1
       - pillow==10.2.0
+      - preshed==3.0.9
       - priority==2.0.0
       - prompt-toolkit==3.0.36
       - proto-plus==1.23.0
-      - protobuf==4.25.2
+      - protobuf==4.25.3
       - psycopg2-binary==2.9.9
       - pyasn1==0.5.1
       - pyasn1-modules==0.3.0
@@ -130,6 +144,7 @@ dependencies:
       - pyjwt==2.8.0
       - pyparsing==3.1.1
       - pypdfium2==4.27.0
+      - pyphen==0.15.0
       - pyproject-hooks==1.0.0
       - python-dateutil==2.8.2
       - python-dotenv==1.0.1
@@ -145,22 +160,33 @@ dependencies:
       - rsa==4.9
       - s3transfer==0.10.0
       - safetensors==0.4.2
+      - scikit-learn==1.5.0
+      - scipy==1.13.1
       - segno==1.6.1
       - semver==3.0.2
       - shellingham==1.5.4
       - six==1.16.0
       - slugify==0.0.1
+      - smart-open==7.0.4
       - sniffio==1.3.0
       - sortedcontainers==2.4.0
       - soupsieve==2.5
+      - spacy==3.7.5
+      - spacy-legacy==3.0.12
+      - spacy-loggers==1.0.5
       - spandrel==0.2.2
+      - srsly==2.4.8
       - starlette==0.37.2
       - stringcase==1.2.0
       - structlog==24.1.0
       - sympy==1.12
       - term-image==0.8.0.1
       - text-unidecode==1.3
+      - textacy==0.13.0
+      - thinc==8.2.4
+      - threadpoolctl==3.5.0
       - tokenizers==0.19.1
+      - toolz==0.12.1
       - torch==2.3.0
       - torchvision==0.18.0
       - tqdm==4.66.4
@@ -174,8 +200,11 @@ dependencies:
       - urllib3==2.0.7
       - uvicorn==0.30.1
       - uvloop==0.19.0
+      - wasabi==1.1.3
       - watchfiles==0.21.0
       - wcwidth==0.2.13
+      - weasel==0.4.1
       - websockets==12.0
+      - wrapt==1.16.0
       - wsproto==1.2.0
 prefix: /Volumes/Devo/Users/jago/miniforge3/envs/jobs
