@@ -3,7 +3,6 @@ from click import pass_context
 import questionary
 import rich
 import typer
-from jobs.main import serve
 from jobs.database import create_tables
 from jobs.database.models import (
     Company,
@@ -13,7 +12,7 @@ from jobs.database.models import (
 )
 from typing_extensions import Annotated
 from jobs.core.pdf import to_pil
-from coreimage.terminal import get_kitty_image as get_term_image
+from coreimage.terminal import print_term_image
 import logging
 from .prompts.jobs import ApplyInput, apply_job_form
 from .prompts.events import EventInput, add_event_form
@@ -22,11 +21,6 @@ from jobs.core.country import to_iso
 from jobs.cli.commands.job import cmd_apply, cmd_event, cmd_tokens
 
 cli = typer.Typer()
-
-
-@cli.command()
-def serve_api():
-    serve()
 
 
 @cli.command()
@@ -41,7 +35,7 @@ def init_db():
 @cli.command()
 def pdf2img(pdf: Annotated[Path, typer.Argument()]):
     img = to_pil(pdf)
-    print(get_term_image(image=img, height=40))
+    print_term_image(image=img, height=40)
 
 
 @cli.command()

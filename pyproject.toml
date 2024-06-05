@@ -34,7 +34,7 @@ dependencies = [
 	"click>=8.1.7",
 	"colorama>=0.4.6",
 	"corefile>=0.1.5",
-	"coreimage>=0.0.93",
+	"coreimage>=0.0.137",
 	"corelog>=0.0.12",
 	"corestring>=0.1.22",
 	"cryptography>=41.0.5",
@@ -126,7 +126,7 @@ dependencies = [
 ]
 
 [project.scripts]
-jobs-cli = "jobs.cli:cli"
+jobs = "jobs.cli:cli"
 
 [tool.setuptools.dynamic]
 version = {attr = "jobs.__version__"}

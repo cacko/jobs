@@ -3,8 +3,6 @@ from .routers import api
 from fastapi.middleware.cors import CORSMiddleware
 from jobs.config import app_config
 import asyncio
-from hypercorn.config import Config
-from hypercorn.asyncio import serve as hyper_serve
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 
@@ -40,10 +38,3 @@ def create_app():
 
     app.include_router(api.router)
     return app
-
-
-def serve():
-    server_config = Config.from_mapping(
-        bind=f"{app_config.api.host}:{app_config.api.port}", worker_class="trio"
-    )
-    asyncio.run(hyper_serve(create_app(), server_config))

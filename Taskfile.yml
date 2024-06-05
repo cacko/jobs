@@ -61,8 +61,8 @@ tasks:
     desc: systemd exec
     dir: src/
     cmds:
-      - direnv exec . mamba run --live-stream -n {{.PROJECT}} python -m {{.PROJECT}}.cli serve-api
-
+      - direnv exec . mamba run --live-stream -n {{.PROJECT}} uvicorn 'jobs.main:create_app' --host 0.0.0.0 --port 44551 --workers 3 --log-level info --use-colors --factory --loop uvloop --access-log
+  
   export:
     desc: export env
     cmds:
