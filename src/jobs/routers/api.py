@@ -74,7 +74,7 @@ def get_list_response(
     return JSONResponse(content=results, headers=headers)
 
 
-@router.get("/api/jobs", tags=["api"])
+@router.get("/api/jobs/", tags=["api"])
 def list_jobs(
     page: int = 1,
     limit: int = 30,
