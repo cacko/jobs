@@ -3,7 +3,7 @@ from typing import Optional
 from yaml import Token
 
 from jobs.database.models.skill import Skill
-from .base import DbModel
+from .base import DbModel, default_timestamp
 from .company import Company
 from .location import Location
 from .position import Position
@@ -38,7 +38,7 @@ class Job(DbModel):
     Position = ForeignKeyField(Position)
     skills = ManyToManyField(Skill, backref='jobs')
     url = CharField()
-    last_modified = DateTimeField(default=datetime.datetime.now)
+    last_modified = DateTimeField(default=default_timestamp)
     slug = CharField(unique=True)
     deleted = BooleanField(default=False)
 
@@ -75,7 +75,7 @@ class Job(DbModel):
 
     def delete_instance(self, recursive=False, delete_nullable=False):
         self.deleted = True
-        self.last_modified = datetime.datetime.now(tz=datetime.timezone.utc)
+        self.last_modified = default_timestamp()
         self.save(only=["deleted", "last_modified"])
 
     def save(self, *args, **kwds):
@@ -86,7 +86,7 @@ class Job(DbModel):
                 url=self.url
             ))
         if 'only' not in kwds:
-            self.last_modified = datetime.datetime.now(tz=datetime.timezone.utc)
+            self.last_modified = default_timestamp()
         return super().save(*args, **kwds)
 
     @property

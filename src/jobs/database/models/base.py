@@ -4,6 +4,11 @@ from humanfriendly.tables import format_robust_table
 from fuzzelinho import extract
 
 from jobs.routers.models import BaseResponse
+from datetime import datetime, timezone
+
+def default_timestamp():
+    return datetime.now(tz=timezone.utc)
+
 
 
 class DbModel(Model):

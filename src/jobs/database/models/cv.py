@@ -1,6 +1,6 @@
 from typing import Optional
 from jobs.database import Database
-from .base import DbModel
+from .base import DbModel, default_timestamp
 from jobs.database.fields import (
     ImageField,
 )
@@ -25,7 +25,7 @@ class CV(DbModel):
     name = CharField()
     data = BlobField()
     Image = ImageField()
-    added = DateTimeField(default=datetime.now)
+    added = DateTimeField(default=default_timestamp)
 
     def to_dict(self):
         data = model_to_dict(self)
