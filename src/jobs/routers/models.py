@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+import logging
 from typing import Optional
 from pydantic import AwareDatetime, BaseModel
 
@@ -11,6 +12,7 @@ class BaseResponse(BaseModel):
         for k, v in kwds.items():
             match v:
                 case datetime():
+                    logging.info([v, v.replace(tzinfo=timezone.utc), v.astimezone(tz=timezone.utc)])
                     kwds[k] = v.replace(tzinfo=timezone.utc)
         super().__init__(*args, **kwds)
 
