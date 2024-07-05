@@ -23,7 +23,6 @@ from peewee import (
     ManyToManyField
 )
 from jobs.config import app_config
-import datetime
 from slugify import slugify
 from jobs.routers.models import JobResponse
 

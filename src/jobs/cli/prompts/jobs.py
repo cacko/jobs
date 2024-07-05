@@ -1,17 +1,14 @@
-import logging
 import questionary
 from contextlib import contextmanager
-
-import urllib3
 from jobs.database.enums import CV_PATH, JobStatus, LocationType, Source
 from pycountry import countries
 from jobs.database.models.company import Company
 from jobs.database.models.location import Location
 from jobs.database.models.position import Position
-from pydantic import BaseModel, field_serializer
+from pydantic import BaseModel, field_validator
 from pathlib import Path
 from . import THEME
-from urllib.parse import ParseResult, urlparse, urlunparse
+from urllib.parse import urlparse
 
 
 class ApplyInput(BaseModel):
@@ -29,10 +26,11 @@ class ApplyInput(BaseModel):
     @property
     def cv(self) -> Path:
         return Path(CV_PATH) / self.cv_path
-
-    @field_serializer("url")
-    def serialize_url(self, url: str):
-        return urlparse(self.url)._replace(query="", fragment="").geturl()
+    
+    @field_validator("url")
+    @classmethod
+    def clean_url(cls, url: str):
+        return urlparse(url)._replace(query="", fragment="").geturl()
 
 
 @contextmanager
