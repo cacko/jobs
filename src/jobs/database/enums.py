@@ -21,6 +21,7 @@ class Choices(object):
 
 class Source(Choices, StrEnum):
     LINKEDIN = "linkedin"
+    DWP = "dwp"
     DIRECT = "direct"
 
     @classmethod
