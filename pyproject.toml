@@ -15,7 +15,7 @@ classifiers = [
 description = "A small jobs package"
 name = "jobs"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dynamic = ["version"]
 dependencies = [
 	"annotated-types>=0.6.0",
