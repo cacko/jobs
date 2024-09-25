@@ -23,6 +23,7 @@ class Source(Choices, StrEnum):
     LINKEDIN = "linkedin"
     DWP = "dwp"
     DIRECT = "direct"
+    TOTALJOBS = "totaljobs"
 
     @classmethod
     def values(cls):
