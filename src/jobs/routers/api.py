@@ -36,8 +36,9 @@ def get_list_response(
         filters.append(Job.last_modified > last_modified)
     # order_by = []
 
-    base_query = Job.select()
-    query = base_query.where(*filters)
+    query = Job.select()
+    if len(filters):
+        query = query.where(*filters)
     total = query.count()
     if total > 0:
         page = min(max(1, page), floor(total / limit) + 1)
