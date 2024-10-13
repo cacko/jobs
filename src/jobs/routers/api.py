@@ -36,13 +36,15 @@ def get_list_response(
         filters.append(Job.last_modified > last_modified)
     # order_by = []
 
-    base_query = Event.select().join_from(Event, Job)
+    base_query = Job.select()
     query = base_query.where(*filters)
     total = query.count()
     if total > 0:
         page = min(max(1, page), floor(total / limit) + 1)
-    results = [event.Job.to_response(events=[event.to_response()]).model_dump()
-               for event in query.paginate(page, limit)]
+    jobs =query.paginate(page, limit)
+    events = Event.select().where(Event.Job.in_(jobs))
+    results = [Job.to_response(events=[event.to_response() for event in filter(lambda e: e.Job.id == job.id, events)]).model_dump()
+               for job in jobs]
     logging.debug(results)
     headers = {
         "x-pagination-total": f"{total}",
