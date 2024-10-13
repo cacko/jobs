@@ -20,6 +20,7 @@ from fastapi.responses import JSONResponse, FileResponse
 from datetime import datetime
 from .auth import check_auth
 from jobs.config import app_config
+from peewee import fn
 
 router = APIRouter()
 
@@ -30,7 +31,7 @@ def get_list_response(
     last_modified: Optional[datetime] = None
 ):
     results = []
-    filters = [Event.Event == JobEvent.APPLIED]
+    filters = []
     if last_modified:
         filters.append(Job.last_modified > last_modified)
     # order_by = []
