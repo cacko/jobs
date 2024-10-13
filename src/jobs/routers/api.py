@@ -2,19 +2,9 @@ import logging
 from math import ceil, floor
 from typing import Optional
 from urllib.parse import urlencode
-from fastapi import (
-    APIRouter,
-    HTTPException,
-    Request,
-    Form,
-    File,
-    Depends
-)
+from fastapi import APIRouter, HTTPException, Request, Form, File, Depends
 from jobs.database.enums import JobEvent
-from jobs.database.models import (
-    Job,
-    Event
-)
+from jobs.database.models import Job, Event
 from jobs.database.export import to_xlsx
 from fastapi.responses import JSONResponse, FileResponse
 from datetime import datetime
@@ -26,9 +16,7 @@ router = APIRouter()
 
 
 def get_list_response(
-    page: int = 1,
-    limit: int = 50,
-    last_modified: Optional[datetime] = None
+    page: int = 1, limit: int = 50, last_modified: Optional[datetime] = None
 ):
     results = []
     filters = []
@@ -42,37 +30,44 @@ def get_list_response(
     total = query.count()
     if total > 0:
         page = min(max(1, page), floor(total / limit) + 1)
-    jobs =query.paginate(page, limit)
+    jobs = query.paginate(page, limit)
     events = Event.select().where(Event.Job.in_(jobs))
-    results = [job.to_response(events=[event.to_response() for event in filter(lambda e: e.Job.id == job.id, events)]).model_dump()
-               for job in jobs]
+    results = [
+        job.to_response(
+            events=[
+                event.to_response()
+                for event in filter(lambda e: e.Job.id == job.id, events)
+            ]
+        ).model_dump()
+        for job in jobs
+    ]
     logging.debug(results)
     headers = {
         "x-pagination-total": f"{total}",
         "x-pagination-page": f"{page}",
     }
-    
-    def get_next_url(
-        page: int,
-        total: int,
-        limit: int
-    ):
+
+    def get_next_url(page: int, total: int, limit: int):
         try:
-            last_page = ceil(total/limit)
+            last_page = ceil(total / limit)
             page += 1
             assert last_page + 1 > page
-            params = {k: v for k, v in dict(
-                page=page,
-                limit=limit,
-            ).items() if v}
+            params = {
+                k: v
+                for k, v in dict(
+                    page=page,
+                    limit=limit,
+                ).items()
+                if v
+            }
             return f"{app_config.api.web_host}/api/jobs?{urlencode(params)}"
         except AssertionError:
             return None
-    
+
     if next_url := get_next_url(
-            total=total,
-            page=page,
-            limit=limit,
+        total=total,
+        page=page,
+        limit=limit,
     ):
         headers["x-pagination-next"] = next_url
     return JSONResponse(content=results, headers=headers)
@@ -83,20 +78,13 @@ def list_jobs(
     page: int = 1,
     limit: int = 30,
     last_modified: Optional[datetime] = None,
-    auth_user=Depends(check_auth)
+    auth_user=Depends(check_auth),
 ):
-    return get_list_response(
-        page=page,
-        limit=limit,
-        last_modified=last_modified
-    )
+    return get_list_response(page=page, limit=limit, last_modified=last_modified)
 
 
 @router.get("/api/job/{slug}", tags=["api"])
-def get_job(
-    slug: str,
-    auth_user=Depends(check_auth)
-):
+def get_job(slug: str, auth_user=Depends(check_auth)):
     try:
         job: Job = Job.select(Job).where(Job.slug == slug).get()
         assert job
@@ -114,7 +102,7 @@ def xlsx_export():
     return FileResponse(
         path=xlsx_path.as_posix(),
         filename=xlsx_path.name,
-        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
 
 
@@ -123,8 +111,7 @@ def create_upload_file(
     request: Request,
     file: bytes = File(),
     category: str = Form(),
-    botyo_id: str = Form()
-
+    botyo_id: str = Form(),
 ):
     raise HTTPException(404)
     # uploaded_path = TempPath(uuid4().hex)
