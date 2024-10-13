@@ -43,7 +43,7 @@ def get_list_response(
         page = min(max(1, page), floor(total / limit) + 1)
     jobs =query.paginate(page, limit)
     events = Event.select().where(Event.Job.in_(jobs))
-    results = [Job.to_response(events=[event.to_response() for event in filter(lambda e: e.Job.id == job.id, events)]).model_dump()
+    results = [job.to_response(events=[event.to_response() for event in filter(lambda e: e.Job.id == job.id, events)]).model_dump()
                for job in jobs]
     logging.debug(results)
     headers = {
