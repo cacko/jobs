@@ -105,7 +105,7 @@ def xlsx_export():
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
 
-@router.put("/api/event", tags=["api"])
+@router.put("/api/events", tags=["api"])
 def add_job_event(input: EventRequest, admin=Depends(check_admin)):
     job: Job = Job.get(Job.slug == input.job_id)
     assert job
@@ -116,7 +116,8 @@ def add_job_event(input: EventRequest, admin=Depends(check_admin)):
     )
     assert created
     assert event
-    return event.to_response()
+    response = event.to_response()
+    return JSONResponse(content=response.model_dump())
 
 @router.post("/api/artworks", tags=["api"])
 def create_upload_file(
