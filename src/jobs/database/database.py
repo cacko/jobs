@@ -1,22 +1,21 @@
 from playhouse.db_url import parse
-from playhouse.postgres_ext import PostgresqlExtDatabase
+from peewee import PostgresqlDatabase
+from playhouse.shortcuts import ReconnectMixin, OperationalError, InterfaceError
 from jobs.config import app_config
-from typing import Optional, Any
+from typing import Optional
 from peewee import OperationalError
 
 
-class ReconnectingDB(PostgresqlExtDatabase):
-    
-    def execute_sql(self, sql, params: Any | None = ..., commit=...):
-        try:
-            return super().execute_sql(sql, params, commit)
-        except OperationalError as e:
-            raise RuntimeError
+class ReconnectingDB(ReconnectMixin, PostgresqlDatabase):
 
+    reconnect_errors = (
+        (OperationalError, "terminat"),
+        (InterfaceError, "connection already closed"),
+    )
 
 
 class DatabaseMeta(type):
-    _instance: Optional['Database'] = None
+    _instance: Optional["Database"] = None
 
     def __call__(cls, *args, **kwargs):
         if not cls._instance:
@@ -24,7 +23,7 @@ class DatabaseMeta(type):
         return cls._instance
 
     @property
-    def db(cls) -> ReconnectingDB :
+    def db(cls) -> ReconnectingDB:
         return cls().get_db()
 
 
