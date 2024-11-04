@@ -67,3 +67,8 @@ class JobResponse(BaseResponse):
     url: str
     events: Optional[list[JobEventResponse]] = None
     skills: Optional[list[SkillResponse]] = None
+
+class EventRequest(BaseModel):
+    job_id: str
+    event: JobEvent
+    description: str

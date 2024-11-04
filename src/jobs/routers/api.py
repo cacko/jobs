@@ -3,14 +3,14 @@ from math import ceil, floor
 from typing import Optional
 from urllib.parse import urlencode
 from fastapi import APIRouter, HTTPException, Request, Form, File, Depends
-from jobs.database.enums import JobEvent
 from jobs.database.models import Job, Event
 from jobs.database.export import to_xlsx
 from fastapi.responses import JSONResponse, FileResponse
 from datetime import datetime
-from .auth import check_auth
+
+from jobs.routers.models import EventRequest
+from .auth import check_auth, check_admin
 from jobs.config import app_config
-from peewee import fn
 
 router = APIRouter()
 
@@ -105,6 +105,18 @@ def xlsx_export():
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
 
+@router.put("/api/event", tags=["api"])
+def add_job_event(input: EventRequest, admin=Depends(check_admin)):
+    job: Job = Job.get(Job.slug == input.job_id)
+    assert job
+    event, created = Event.get_or_create(
+        Job=job,
+        Event=input.event,
+        description=input.description
+    )
+    assert created
+    assert event
+    return event.to_response()
 
 @router.post("/api/artworks", tags=["api"])
 def create_upload_file(

@@ -51,6 +51,9 @@ class AWSConfig(BaseModel):
 class MashaConfig(BaseModel):
     host: str
     port: int
+    
+class AccessConfig(BaseModel):
+    admin: list[str]
 
 
 class Settings(BaseModel):
@@ -59,6 +62,7 @@ class Settings(BaseModel):
     aws: AWSConfig
     firebase: FirebaseConfig
     masha: MashaConfig
+    access: AccessConfig
 
 
 data = yaml.full_load(config_file.read_text())

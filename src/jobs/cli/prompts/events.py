@@ -1,4 +1,3 @@
-import logging
 import questionary
 from contextlib import contextmanager
 from jobs.database.enums import JobEvent, JobStatus
