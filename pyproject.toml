@@ -74,7 +74,7 @@ dependencies = [
 	"packaging",
 	"pandas",
 	"peewee",
-	"pillow",
+	"pillow>=11",
 	"prompt-toolkit",
 	"proto-plus",
 	"protobuf<5,",
