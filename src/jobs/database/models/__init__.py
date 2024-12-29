@@ -5,6 +5,7 @@ from .event import Event
 from .job import Job, JobSkill
 from .position import Position
 from .skill import Skill
+from .cover_letter import CoverLetter
 
 __all__ = [
     "Company",
@@ -14,5 +15,6 @@ __all__ = [
     "Job",
     "Position",
     "Skill",
-    "JobSkill"
+    "JobSkill",
+    "CoverLetter"
 ]

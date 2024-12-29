@@ -32,8 +32,8 @@ cli = typer.Typer()
 @cli.command()
 def init_db():
     try:
-        assert typer.confirm("Dropping all data?")
-        create_tables(drop=True)
+        # assert typer.confirm("Dropping all data?")
+        create_tables()
     except AssertionError:
         logging.info("ignored")
 

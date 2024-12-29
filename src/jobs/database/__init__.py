@@ -7,7 +7,8 @@ from .models import (
     Event,
     Position,
     Skill,
-    JobSkill
+    JobSkill,
+    CoverLetter
 )
 
 
@@ -20,7 +21,8 @@ def create_tables(drop=False):
         Event,
         Position,
         Skill,
-        JobSkill
+        JobSkill,
+        CoverLetter
     ]
     if drop:
         Database.db.drop_tables(tables)

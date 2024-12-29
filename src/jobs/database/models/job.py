@@ -8,6 +8,7 @@ from .company import Company
 from .location import Location
 from .position import Position
 from .cv import CV
+from .cover_letter import CoverLetter
 from jobs.database import Database
 from jobs.database.fields import (
     JobStatusField,
@@ -40,6 +41,7 @@ class Job(DbModel):
     last_modified = DateTimeField(default=default_timestamp)
     slug = CharField(unique=True)
     deleted = BooleanField(default=False)
+    CoverLetter = ForeignKeyField(CoverLetter, null=True)
 
     @classmethod
     def get_slug(cls, **kwds) -> Optional[str]:

@@ -40,6 +40,12 @@ class CVResponse(BaseResponse):
     name: str
     image: ImageReponse
     added: AwareDatetime
+    
+class CoverLetterResponse(BaseResponse):
+    slug: str
+    name: str
+    image: ImageReponse
+    added: AwareDatetime
 
 
 class LocationResponse(BaseResponse):
