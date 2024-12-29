@@ -1,7 +1,7 @@
 from typing import Optional
 import questionary
 from contextlib import contextmanager
-from jobs.database.enums import CV_PATH, JobStatus, LocationType, Source
+from jobs.database.enums import CV_PATH, CL_PATH, JobStatus, LocationType, Source
 from pycountry import countries
 from jobs.database.models.company import Company
 from jobs.database.models.location import Location
@@ -28,12 +28,12 @@ class ApplyInput(BaseModel):
     @property
     def cv(self) -> Path:
         return Path(CV_PATH) / self.cv_path
-    
+
     @property
     def cover_letter(self) -> Optional[Path]:
         try:
             assert self.cover_letter_path
-            return Path(CV_PATH) / self.cover_letter_path
+            return Path(CL_PATH) / self.cover_letter_path
         except AssertionError:
             return None
 
@@ -53,8 +53,7 @@ def apply_job_form():
         city=questionary.autocomplete("City", choices=Location.get_cities()),
         url=questionary.text("Url"),
         cv_path=questionary.path("CV", get_paths=lambda: [CV_PATH]),
-        cover_letter_path=questionary.path(
-            "Cover Letter", get_paths=lambda: [CV_PATH]),
+        cover_letter_path=questionary.path("Cover Letter", get_paths=lambda: [CL_PATH]),
         note=questionary.text("Application Note", multiline=True),
         status=questionary.select(
             "Status",

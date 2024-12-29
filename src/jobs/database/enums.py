@@ -2,7 +2,7 @@ from enum import StrEnum
 
 
 CV_PATH = "/Volumes/Devo/Users/jago/Documents/AleksandarSpasov"
-
+CL_PATH = "/Volumes/Devo/Users/jago/Documents/AleksandarSpasov/cover_letters"
 
 class Choices(object):
 

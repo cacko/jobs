@@ -1,4 +1,5 @@
 from pathlib import Path
+import sys
 from click import pass_context
 import questionary
 import rich
@@ -14,6 +15,8 @@ from typing_extensions import Annotated
 from jobs.core.pdf import to_pil
 from coreimage.terminal import print_term_image
 import logging
+
+from jobs.database.models.cover_letter import CoverLetter
 from .prompts.jobs import ApplyInput, apply_job_form
 from .prompts.events import EventInput, add_event_form
 from .prompts.job import JobInput, select_job_form
@@ -55,6 +58,12 @@ def add_company(name: str):
 def add_cv(cv_path: Annotated[Path, typer.Argument()]):
     cv = CV.from_path(cv_path)
     logging.info(f"\n{cv.to_table()}")
+
+
+@cli.command()
+def add_cover_letter(cl_path: Annotated[Path, typer.Argument()]):
+    cl = CoverLetter.from_path(cl_path)
+    logging.info(f"\n{cl.to_table()}")
 
 
 @cli.command()

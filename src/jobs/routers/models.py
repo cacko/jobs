@@ -71,6 +71,7 @@ class JobResponse(BaseResponse):
     onsite: LocationType
     source: Source
     url: str
+    cover_letter: Optional[CoverLetterResponse] = None
     events: Optional[list[JobEventResponse]] = None
     skills: Optional[list[SkillResponse]] = None
 
