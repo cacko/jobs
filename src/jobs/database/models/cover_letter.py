@@ -41,6 +41,8 @@ class CoverLetter(DbModel):
     def from_path(cls, cl_path: Path):
         try:
             assert cl_path.exists()
+            assert cl_path.is_file()
+            assert cl_path.suffix.lower() == ".pdf"
             fhash = file_hash(cl_path)
             tmp = TempPath(f"{cl_path.stem}-{fhash}.png")
             img = to_pil(cl_path)

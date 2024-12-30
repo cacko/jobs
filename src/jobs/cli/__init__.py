@@ -78,7 +78,6 @@ def apply():
     with apply_job_form() as form:
         ans = form.ask()
         input = ApplyInput(**ans)
-        logging.debug(input)
         cmd_apply(input)
 
 
