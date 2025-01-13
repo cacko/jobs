@@ -24,7 +24,6 @@ class S3(object, metaclass=S3Meta):
 
     def __init__(self) -> None:
         cfg = app_config.aws
-        logging.debug(cfg)
         self._client = boto3.client(
             service_name="s3",
             aws_access_key_id=cfg.access_key_id,

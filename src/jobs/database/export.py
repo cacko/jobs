@@ -29,7 +29,6 @@ def to_xlsx() -> Path:
 
     for idx, event in enumerate(query):
         job: Job = event.Job
-        rich.print(job.to_dict())
         id_to_pos.setdefault(job.slug, idx)
         data["Company"].append(job.Company.name)
         data["Position"].append(job.Position.name)
