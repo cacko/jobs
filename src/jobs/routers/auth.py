@@ -6,7 +6,7 @@ from jobs.config import app_config
 import logging
 
 
-ALLOWED_IPS = ["127.0.0.1"]
+ALLOWED_IPS = ["127.0.0.1", "192.168.0.107"]
 
 
 def get_auth_user(request: Request) -> AuthUser:
