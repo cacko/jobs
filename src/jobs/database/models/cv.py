@@ -48,7 +48,7 @@ class CV(DbModel):
             name=cv_path.stem,
             data=cv_path.read_bytes(),
             Image=tmp.as_posix(),
-            added=datetime.now(tz=timezone.utc)
+            added=datetime.now(tz=timezone.utc).replace(tzinfo=None)
         )
         return cv
 

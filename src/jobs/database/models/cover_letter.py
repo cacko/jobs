@@ -51,7 +51,7 @@ class CoverLetter(DbModel):
                 name=cl_path.stem,
                 data=cl_path.read_bytes(),
                 Image=tmp.as_posix(),
-                added=datetime.now(tz=timezone.utc)
+                added=datetime.now(tz=timezone.utc).replace(tzinfo=None)
             )
             return cv
         except AssertionError:
