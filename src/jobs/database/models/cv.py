@@ -25,7 +25,7 @@ class CV(DbModel):
     name = CharField()
     data = BlobField()
     Image = ImageField()
-    added = DateTimeField(default=default_timestamp)
+    added = DateTimeField(default=default_timestamp, utc=True)
 
     def to_dict(self):
         data = model_to_dict(self)

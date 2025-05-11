@@ -1,3 +1,4 @@
+from pytz import utc
 from .base import DbModel, default_timestamp
 from peewee import (
     ForeignKeyField,
@@ -14,7 +15,7 @@ class Event(DbModel):
     Job = ForeignKeyField(Job)
     Event = JobEventField()
     description = CleanTextField()
-    timestamp = DateTimeField(default=default_timestamp)
+    timestamp = DateTimeField(default=default_timestamp, utc=True)
     
     @classmethod
     def get_or_create(cls, **kwargs) -> tuple['Event', bool]:
