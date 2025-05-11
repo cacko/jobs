@@ -7,7 +7,7 @@ from jobs.routers.models import BaseResponse
 from datetime import datetime, timezone
 
 def default_timestamp():
-    return datetime.now(tz=timezone.utc).replace(tzinfo=None)
+    return datetime.now(tz=timezone.utc)
 
 
 
