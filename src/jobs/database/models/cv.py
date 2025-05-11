@@ -6,7 +6,7 @@ from jobs.database.fields import (
 )
 from peewee import (
     CharField,
-    DateTimeField,
+    TimestampField,
     BlobField, IntegrityError
 )
 from pathlib import Path
@@ -25,7 +25,7 @@ class CV(DbModel):
     name = CharField()
     data = BlobField()
     Image = ImageField()
-    added = DateTimeField(default=default_timestamp, utc=True)
+    added = TimestampField(default=default_timestamp, utc=True)
 
     def to_dict(self):
         data = model_to_dict(self)
