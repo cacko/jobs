@@ -165,3 +165,4 @@ jobs./xlsx
 *.whl
 app/settings.yaml
 .DS_Store
+src/.DS_Store
