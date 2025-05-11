@@ -2,12 +2,13 @@ from pytz import utc
 from .base import DbModel, default_timestamp
 from peewee import (
     ForeignKeyField,
-    TimestampField
 )
 from jobs.database import Database
 from jobs.database.fields import CleanTextField, JobEventField
 from jobs.routers.models import JobEventResponse
 from .job import Job
+from playhouse.postgres_ext import DateTimeTZField
+
 
 
 class Event(DbModel):
@@ -15,7 +16,7 @@ class Event(DbModel):
     Job = ForeignKeyField(Job)
     Event = JobEventField()
     description = CleanTextField()
-    timestamp = TimestampField(default=default_timestamp, utc=True)
+    timestamp = DateTimeTZField(default=default_timestamp)
     
     @classmethod
     def get_or_create(cls, **kwargs) -> tuple['Event', bool]:

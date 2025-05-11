@@ -17,12 +17,12 @@ from jobs.database.fields import (
 )
 from peewee import (
     CharField,
-    TimestampField,
     ForeignKeyField,
     BooleanField,
     IntegrityError,
     ManyToManyField
 )
+from playhouse.postgres_ext import DateTimeTZField
 from jobs.config import app_config
 from slugify import slugify
 from jobs.routers.models import JobResponse
@@ -38,7 +38,7 @@ class Job(DbModel):
     Position = ForeignKeyField(Position)
     skills = ManyToManyField(Skill, backref='jobs')
     url = CharField()
-    last_modified = TimestampField(default=default_timestamp, utc=True)
+    last_modified = DateTimeTZField(default=default_timestamp)
     slug = CharField(unique=True)
     deleted = BooleanField(default=False)
     CoverLetter = ForeignKeyField(CoverLetter, null=True)

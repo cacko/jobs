@@ -6,7 +6,6 @@ from jobs.database.fields import (
 )
 from peewee import (
     CharField,
-    TimestampField,
     BlobField, IntegrityError
 )
 from pathlib import Path
@@ -18,6 +17,7 @@ from corefile.filepath import file_hash
 from datetime import datetime, timezone
 from jobs.core.pdf import to_pil
 from jobs.routers.models import CVResponse
+from playhouse.postgres_ext import DateTimeTZField
 
 
 class CV(DbModel):
@@ -25,7 +25,7 @@ class CV(DbModel):
     name = CharField()
     data = BlobField()
     Image = ImageField()
-    added = TimestampField(default=default_timestamp, utc=True)
+    added = DateTimeTZField(default=default_timestamp)
 
     def to_dict(self):
         data = model_to_dict(self)
