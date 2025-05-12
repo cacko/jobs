@@ -7,7 +7,7 @@ from jobs.database.models import Job, Event
 from jobs.database.export import to_xlsx
 from fastapi.responses import JSONResponse, FileResponse
 from datetime import datetime
-
+from peewee import fn
 from jobs.routers.models import EventRequest
 from .auth import check_auth, check_admin
 from jobs.config import app_config
@@ -22,7 +22,7 @@ def get_list_response(
     filters = []
     logging.warning(last_modified)
     if last_modified:
-        filters.append(Job.last_modified > last_modified)
+        filters.append(fn.date_trunc('milliseconds',Job.last_modified) > last_modified)
     # order_by = []
 
     query = Job.select()
