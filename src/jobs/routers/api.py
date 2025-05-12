@@ -20,9 +20,8 @@ def get_list_response(
 ):
     results = []
     filters = []
-    logging.warning(last_modified)
     if last_modified:
-        filters.append(fn.date_trunc('milliseconds',Job.last_modified) > last_modified)
+        filters.append(fn.date_trunc('second',Job.last_modified) > last_modified)
     # order_by = []
 
     query = Job.select()
@@ -42,7 +41,6 @@ def get_list_response(
         ).model_dump()
         for job in jobs
     ]
-    logging.warning(results)
     headers = {
         "x-pagination-total": f"{total}",
         "x-pagination-page": f"{page}",
