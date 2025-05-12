@@ -20,6 +20,7 @@ def get_list_response(
 ):
     results = []
     filters = []
+    logging.warning(last_modified)
     if last_modified:
         filters.append(Job.last_modified > last_modified)
     # order_by = []
