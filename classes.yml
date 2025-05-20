@@ -1,0 +1,5 @@
+linkedin:
+  company: job-details-jobs-unified-top-card__company-name
+  position: t-24 job-details-jobs-unified-top-card__job-title
+  location: t-black--light mt2 job-details-jobs-unified-top-card__tertiary-description-container
+  description: jobs-description__container jobs-description__container--condensed
