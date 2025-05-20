@@ -14,6 +14,8 @@ def get_auth_user(request: Request) -> AuthUser:
         client = request.client
         assert client
         logging.info(f"auth -> {client.host}")
+        if client.host in ALLOWED_IPS:
+            return
         token = request.headers.get("x-user-token", "")
         logging.debug(f"token from header {token}")
         assert token
