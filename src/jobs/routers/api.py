@@ -116,7 +116,7 @@ def add_job_event(input: EventRequest, admin=Depends(check_admin)):
     )
     assert created
     assert event
-    match event:
+    match event.Event:
         case JobEvent.REJECT:
             job.Status = JobStatus.REJECTED
         case JobEvent.APPLIED:
