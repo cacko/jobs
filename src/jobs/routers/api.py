@@ -124,7 +124,8 @@ def add_job_event(input: EventRequest, admin=Depends(check_admin)):
         case _:
             job.Status = JobStatus.IN_PROGRESS
     job.save()
-    response = job.to_response()
+    events = Event.select(Event).where(Event.Job == job)
+    response = job.to_response(events=[e.to_response() for e in events])
     return JSONResponse(content=response.model_dump())
 
 @router.post("/api/artworks", tags=["api"])
