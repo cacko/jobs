@@ -25,6 +25,7 @@ class Source(Choices, StrEnum):
     DIRECT = "direct"
     TOTALJOBS = "totaljobs"
     INDEED = "indeed"
+    WELCOMETOTHEJUNGLE = "welcometothejungle"
 
     @classmethod
     def values(cls):
