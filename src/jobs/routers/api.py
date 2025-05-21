@@ -3,6 +3,7 @@ from math import ceil, floor
 from typing import Optional
 from urllib.parse import urlencode
 from fastapi import APIRouter, HTTPException, Request, Form, File, Depends
+from jobs.database.enums import JobEvent, JobStatus
 from jobs.database.models import Job, Event
 from jobs.database.export import to_xlsx
 from fastapi.responses import JSONResponse, FileResponse
@@ -115,8 +116,15 @@ def add_job_event(input: EventRequest, admin=Depends(check_admin)):
     )
     assert created
     assert event
-    job.update(last_modified=event.timestamp)
-    response = event.to_response()
+    match event:
+        case JobEvent.REJECT:
+            job.Status = JobStatus.REJECTED
+        case JobEvent.APPLIED:
+            job.Status = JobStatus.PENDING
+        case _:
+            job.Status = JobStatus.IN_PROGRESS
+    job.save()
+    response = job.to_response()
     return JSONResponse(content=response.model_dump())
 
 @router.post("/api/artworks", tags=["api"])
