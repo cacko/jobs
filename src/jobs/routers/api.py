@@ -121,6 +121,8 @@ def add_job_event(input: EventRequest, admin=Depends(check_admin)):
             job.Status = JobStatus.REJECTED
         case JobEvent.APPLIED:
             job.Status = JobStatus.PENDING
+        case JobEvent.EXPIRED:
+            job.Status = JobStatus.EXPIRED
         case _:
             job.Status = JobStatus.IN_PROGRESS
     job.save()
