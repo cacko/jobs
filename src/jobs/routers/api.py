@@ -115,7 +115,7 @@ def add_job_event(input: EventRequest, admin=Depends(check_admin)):
     )
     assert created
     assert event
-    job.update(dict(last_modified=event.timestamp))
+    job.update(last_modified=event.timestamp)
     response = event.to_response()
     return JSONResponse(content=response.model_dump())
 
