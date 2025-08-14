@@ -10,7 +10,7 @@ tasks:
     desc: run flask cli
     dir: src/
     cmds:
-      - mamba run --live-stream -n {{.PROJECT}} python -m {{.PROJECT}}.cli {{.CLI_ARGS}}
+      - mamba run -n {{.PROJECT}} python -m {{.PROJECT}}.cli {{.CLI_ARGS}}
 
   push:
     desc: commit and pushes current changes
