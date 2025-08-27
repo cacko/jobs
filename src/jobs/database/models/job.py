@@ -7,6 +7,7 @@ from .base import DbModel, default_timestamp
 from .company import Company
 from .location import Location
 from .position import Position
+from .user import User
 from .cv import CV
 from .cover_letter import CoverLetter
 from jobs.database import Database
@@ -39,9 +40,10 @@ class Job(DbModel):
     skills = ManyToManyField(Skill, backref='jobs')
     url = CharField()
     last_modified = DateTimeTZField(default=default_timestamp)
-    slug = CharField(unique=True)
+    slug = CharField()
     deleted = BooleanField(default=False)
     CoverLetter = ForeignKeyField(CoverLetter, null=True)
+    User = ForeignKeyField(User)
 
     @classmethod
     def get_slug(cls, **kwds) -> Optional[str]:
@@ -128,6 +130,10 @@ class Job(DbModel):
         database = Database.db
         table_name = 'jobs_job'
         order_by = ["-last_modified"]
+        indexes = (
+            (('User', 'last_modified'), False),  # Note the trailing comma!
+            (('User', 'slug'), True),
+        )
 
 
 JobSkill = Job.skills.get_through_model()

@@ -4,7 +4,7 @@ from typing import Optional
 from urllib.parse import urlencode
 from fastapi import APIRouter, HTTPException, Request, Form, File, Depends
 from jobs.database.enums import JobEvent, JobStatus
-from jobs.database.models import Job, Event
+from jobs.database.models import Job, Event, User
 from jobs.database.export import to_xlsx
 from fastapi.responses import JSONResponse, FileResponse
 from datetime import datetime
@@ -17,15 +17,16 @@ router = APIRouter()
 
 
 def get_list_response(
-    page: int = 1, limit: int = 50, last_modified: Optional[datetime] = None
+    email: str, page: int = 1, limit: int = 50, last_modified: Optional[datetime] = None
 ):
+    
     results = []
-    filters = []
+    filters = [Job.User.email == email]
     if last_modified:
-        filters.append(fn.date_trunc('second',Job.last_modified) > last_modified)
+        filters.append(fn.date_trunc("second", Job.last_modified) > last_modified)
     # order_by = []
 
-    query = Job.select()
+    query = Job.select().join(User)
     if len(filters):
         query = query.where(*filters)
     total = query.count()
@@ -47,7 +48,7 @@ def get_list_response(
         "x-pagination-page": f"{page}",
     }
 
-    def get_next_url(page: int, total: int, limit: int):
+    def get_next_url(email: str, page: int, total: int, limit: int):
         try:
             last_page = ceil(total / limit)
             page += 1
@@ -60,11 +61,12 @@ def get_list_response(
                 ).items()
                 if v
             }
-            return f"{app_config.api.web_host}/api/jobs?{urlencode(params)}"
+            return f"{app_config.api.web_host}/api/{email}/jobs?{urlencode(params)}"
         except AssertionError:
             return None
 
     if next_url := get_next_url(
+        email=email,
         total=total,
         page=page,
         limit=limit,
@@ -73,18 +75,21 @@ def get_list_response(
     return JSONResponse(content=results, headers=headers)
 
 
-@router.get("/api/jobs", tags=["api"])
+@router.get("/api/jobs/{email}", tags=["api"])
 def list_jobs(
+    email: str,
     page: int = 1,
     limit: int = 30,
     last_modified: Optional[datetime] = None,
     auth_user=Depends(check_auth),
 ):
-    return get_list_response(page=page, limit=limit, last_modified=last_modified)
+    return get_list_response(
+        email=email, page=page, limit=limit, last_modified=last_modified
+    )
 
 
-@router.get("/api/job/{slug}", tags=["api"])
-def get_job(slug: str, auth_user=Depends(check_auth)):
+@router.get("/api/job/{email}/{slug}", tags=["api"])
+def get_job(email: str, slug: str, auth_user=Depends(check_auth)):
     try:
         job: Job = Job.select(Job).where(Job.slug == slug).get()
         assert job
@@ -95,8 +100,8 @@ def get_job(slug: str, auth_user=Depends(check_auth)):
         raise HTTPException(404)
 
 
-@router.get("/api/jobs.xlsx", tags=["api"])
-def xlsx_export():
+@router.get("/api/{email}/jobs.xlsx", tags=["api"])
+def xlsx_export(enail: str, auth_user=Depends(check_auth)):
     xlsx_path = to_xlsx()
     assert xlsx_path.exists()
     return FileResponse(
@@ -105,14 +110,15 @@ def xlsx_export():
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
 
-@router.put("/api/events", tags=["api"])
-def add_job_event(input: EventRequest, admin=Depends(check_admin)):
-    job: Job = Job.get(Job.slug == input.job_id)
+
+@router.put("/api//events", tags=["api"])
+def add_job_event(
+    email: str, slug: str, input: EventRequest, auth_user=Depends(check_auth)
+):
+    job: Job = Job.get(Job.slug == input.job_id, Job.User == auth_user)
     assert job
     event, created = Event.get_or_create(
-        Job=job,
-        Event=input.event,
-        description=input.description
+        Job=job, Event=input.event, description=input.description
     )
     assert event
     match event.Event:
@@ -128,6 +134,7 @@ def add_job_event(input: EventRequest, admin=Depends(check_admin)):
     events = Event.select(Event).where(Event.Job == job)
     response = job.to_response(events=[e.to_response() for e in events])
     return JSONResponse(content=response.model_dump())
+
 
 @router.post("/api/artworks", tags=["api"])
 def create_upload_file(

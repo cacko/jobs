@@ -6,6 +6,7 @@ from .job import Job, JobSkill
 from .position import Position
 from .skill import Skill
 from .cover_letter import CoverLetter
+from .user import User
 
 __all__ = [
     "Company",
@@ -16,5 +17,6 @@ __all__ = [
     "Position",
     "Skill",
     "JobSkill",
-    "CoverLetter"
+    "CoverLetter",
+    "User"
 ]

@@ -8,7 +8,8 @@ from .models import (
     Position,
     Skill,
     JobSkill,
-    CoverLetter
+    CoverLetter,
+    User
 )
 
 
@@ -22,7 +23,8 @@ def create_tables(drop=False):
         Position,
         Skill,
         JobSkill,
-        CoverLetter
+        CoverLetter,
+        User
     ]
     if drop:
         Database.db.drop_tables(tables)

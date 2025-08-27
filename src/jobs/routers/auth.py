@@ -2,6 +2,7 @@ from fastapi.exceptions import HTTPException
 from starlette.requests import Request
 from starlette.status import HTTP_403_FORBIDDEN, HTTP_401_UNAUTHORIZED
 from jobs.firebase.auth import Auth, AuthUser
+from jobs.database.models import User
 from jobs.config import app_config
 import logging
 
@@ -9,7 +10,7 @@ import logging
 ALLOWED_IPS = ["127.0.0.1", "192.168.0.107"]
 
 
-def get_auth_user(request: Request) -> AuthUser:
+def get_auth_user(request: Request) -> User:
     try:
         client = request.client
         assert client
@@ -19,7 +20,12 @@ def get_auth_user(request: Request) -> AuthUser:
         assert token
         auth_user = Auth().verify_token(token)
         assert auth_user
-        return auth_user
+        user, _ = User.get_or_create(
+            email=auth_user.email,
+            uuid=auth_user.uid,
+            name=auth_user.name
+        )
+        return user
     except AssertionError:
         raise HTTPException(
             status_code=HTTP_401_UNAUTHORIZED, detail="Not authenticated"
@@ -37,6 +43,7 @@ class AdminAuthorization:
     async def __call__(self, request: Request):
         try:
             auth_user = get_auth_user(request=request)
+            
             assert auth_user.uid in app_config.access.admin
         except AssertionError:
             raise HTTPException(
