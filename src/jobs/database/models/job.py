@@ -91,10 +91,14 @@ class Job(DbModel):
         if 'only' not in kwds:
             self.last_modified = default_timestamp()
         return super().save(*args, **kwds)
+    
+    @property
+    def useremail(self) -> str:
+        return f"{self.User.email}"
 
     @property
     def web_uri(self) -> str:
-        return f"{app_config.api.web_host}/v/{self.slug}"
+        return f"{app_config.api.web_host}/v/{self.useremail}/{self.slug}"
 
     @property
     def job_name(self) -> str:
@@ -115,6 +119,7 @@ class Job(DbModel):
             url=self.url,
             skills=[s.to_response() for s in self.skills],
             cover_letter=self.CoverLetter.to_response() if self.CoverLetter else None,
+            useremail=self.useremail
             **kwds
         )
 
