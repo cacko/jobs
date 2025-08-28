@@ -98,7 +98,7 @@ class Job(DbModel):
 
     @property
     def web_uri(self) -> str:
-        return f"{app_config.api.web_host}/v/{self.useremail}/{self.slug}"
+        return f"{app_config.api.web_host}/{self.useremail}/{self.slug}"
 
     @property
     def job_name(self) -> str:
