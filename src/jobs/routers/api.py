@@ -61,7 +61,7 @@ def get_list_response(
                 ).items()
                 if v
             }
-            return f"{app_config.api.web_host}/api/{email}/jobs?{urlencode(params)}"
+            return f"{app_config.api.web_host}/api/jobs/{email}?{urlencode(params)}"
         except AssertionError:
             return None
 
