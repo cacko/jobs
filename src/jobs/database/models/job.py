@@ -119,7 +119,7 @@ class Job(DbModel):
             url=self.url,
             skills=[s.to_response() for s in self.skills],
             cover_letter=self.CoverLetter.to_response() if self.CoverLetter else None,
-            useremail=self.useremail
+            useremail=self.useremail,
             **kwds
         )
 
