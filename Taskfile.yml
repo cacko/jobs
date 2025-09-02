@@ -38,7 +38,7 @@ tasks:
   exec:
     desc: run  cli on remote
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;cd /var/www/{{.PROJECT}};mamba run --live-stream -n {{.PROJECT}} python -m {{.PROJECT}}.cli {{.CLI_ARGS}}'
+      - ssh $REMOTE_HOST 'source ~/.zshrc;cd /var/www/{{.PROJECT}};mamba run -n {{.PROJECT}} python -m {{.PROJECT}}.cli {{.CLI_ARGS}}'
 
   start:
     desc: start the service
@@ -61,7 +61,7 @@ tasks:
     desc: systemd exec
     dir: src/
     cmds:
-      - direnv exec . mamba run --live-stream -n {{.PROJECT}} uvicorn 'jobs.main:create_app' --host 0.0.0.0 --port 44551 --workers 3 --log-level info --use-colors --factory --loop uvloop --access-log
+      - direnv exec . mamba run -n {{.PROJECT}} uvicorn 'jobs.main:create_app' --host 0.0.0.0 --port 44551 --workers 3 --log-level info --use-colors --factory --loop uvloop --access-log
   
   export:
     desc: export env
@@ -78,7 +78,7 @@ tasks:
   install:
     desc: update package
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;cd /var/www/{{.PROJECT}};mamba run --live-stream -n {{.PROJECT}} pip install {{.CLI_ARGS}} -U'
+      - ssh $REMOTE_HOST 'source ~/.zshrc;cd /var/www/{{.PROJECT}};mamba run -n {{.PROJECT}} pip install {{.CLI_ARGS}} -U'
       - task: export-remote
       - task: deploy
 
@@ -98,7 +98,7 @@ tasks:
     cmds:
       - rm -rf dist/*
       - semver next patch {{.JOBS_VERSION}} > version
-      - mamba run --live-stream -n {{.PROJECT}} python  -m build
+      - mamba run -n {{.PROJECT}} python  -m build
 
   publish:
     desc: publish

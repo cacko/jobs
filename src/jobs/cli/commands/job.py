@@ -13,6 +13,7 @@ from jobs.database.models.job import Job
 from jobs.database.models.location import Location
 from jobs.database.models.position import Position
 from jobs.database.models.skill import Skill
+from jobs.database.models.user import User
 from jobs.masha.skills import Skills
 from datetime import datetime, timezone, timedelta
 
@@ -26,6 +27,7 @@ def cmd_apply(input: ApplyInput):
     cv_obj = CV.from_path(input.cv)
     cover_letter_obj = CoverLetter.from_path(input.cover_letter)
     company_obj, _ = Company.get_or_create(name=input.company)
+    user_obj = User.get(User.email == "alex@cacko.net")
 
     job, created = Job.get_or_create(
         Source=input.source,
@@ -36,7 +38,8 @@ def cmd_apply(input: ApplyInput):
         Status=input.status,
         url=input.url,
         Position=position_obj,
-        CoverLetter=cover_letter_obj
+        CoverLetter=cover_letter_obj,
+        User=user_obj
     )
 
     logging.debug(f"Created: {created}")

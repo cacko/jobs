@@ -111,7 +111,7 @@ def xlsx_export(enail: str, auth_user=Depends(check_auth)):
     )
 
 
-@router.put("/api//events", tags=["api"])
+@router.put("/api/{email}/events", tags=["api"])
 def add_job_event(
     email: str, slug: str, input: EventRequest, auth_user=Depends(check_auth)
 ):
