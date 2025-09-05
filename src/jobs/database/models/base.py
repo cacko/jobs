@@ -1,14 +1,13 @@
-from peewee import Model, DoesNotExist
+from peewee import DoesNotExist
 from playhouse.shortcuts import model_to_dict
 from humanfriendly.tables import format_robust_table
 from fuzzelinho import extract
-
+from playhouse.signals import Model
 from jobs.routers.models import BaseResponse
 from datetime import datetime, timezone
 
 def default_timestamp():
     return datetime.now(tz=timezone.utc)
-
 
 
 class DbModel(Model):
@@ -43,3 +42,5 @@ class DbModel(Model):
             [values],
             column_names=columns
         )
+
+

@@ -28,7 +28,6 @@ from jobs.config import app_config
 from slugify import slugify
 from jobs.routers.models import JobResponse
 
-
 class Job(DbModel):
     Source = SourceField()
     Company = ForeignKeyField(Company)

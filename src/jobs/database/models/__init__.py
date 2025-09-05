@@ -7,6 +7,8 @@ from .position import Position
 from .skill import Skill
 from .cover_letter import CoverLetter
 from .user import User
+from playhouse.signals import post_save
+from jobs.firebase.db import UpdatesDb
 
 __all__ = [
     "Company",
@@ -20,3 +22,8 @@ __all__ = [
     "CoverLetter",
     "User"
 ]
+
+
+@post_save(sender=Job)
+def on_save_handler(model_class, instance, created):
+    UpdatesDb().updates(instance.useremail, instance.last_modified)

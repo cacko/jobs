@@ -29,6 +29,7 @@ class DbConfig(BaseModel):
 
 class FirebaseConfig(BaseModel):
     admin_json: str
+    db_url: str
 
 
 class ApiConfig(BaseModel):
