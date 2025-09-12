@@ -3,6 +3,7 @@ from typing import Optional
 from yaml import Token
 
 from jobs.database.models.skill import Skill
+from jobs.firebase.db import UpdatesDb
 from .base import DbModel, default_timestamp
 from .company import Company
 from .location import Location
@@ -89,11 +90,16 @@ class Job(DbModel):
             ))
         if 'only' not in kwds:
             self.last_modified = default_timestamp()
+            UpdatesDb().updates(self.useruuid, self.last_modified)
         return super().save(*args, **kwds)
     
     @property
     def useremail(self) -> str:
         return f"{self.User.email}"
+    
+    @property
+    def useruuid(self) -> str:
+        return f"{self.User.uuid}"
 
     @property
     def web_uri(self) -> str:
@@ -119,6 +125,7 @@ class Job(DbModel):
             skills=[s.to_response() for s in self.skills],
             cover_letter=self.CoverLetter.to_response() if self.CoverLetter else None,
             useremail=self.useremail,
+            useruuid=self.useruuid,
             **kwds
         )
 
@@ -141,3 +148,4 @@ class Job(DbModel):
 
 
 JobSkill = Job.skills.get_through_model()
+

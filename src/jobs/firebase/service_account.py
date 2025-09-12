@@ -52,3 +52,4 @@ class ServiceAccount(object, metaclass=ServiceAccountMeta):
 
 
 ServiceAccount.register(Path(app_config.firebase.admin_json))
+app = ServiceAccount.app

@@ -7,6 +7,6 @@ class UpdatesDb(object):
     def root_ref(self):
         return db.reference(f"updates")
 
-    def updates(self, useremail: str, timestamp: datetime):
-        user_ref = self.root_ref.child(useremail)
-        return user_ref.set(timestamp)
+    def updates(self, useruuid: str, timestamp: datetime):
+        user_ref = self.root_ref.child(useruuid)
+        return user_ref.set(timestamp.isoformat())
