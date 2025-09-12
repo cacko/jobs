@@ -72,6 +72,7 @@ class JobResponse(BaseResponse):
     source: Source
     url: str
     useremail: str
+    useruuid: str
     cover_letter: Optional[CoverLetterResponse] = None
     events: Optional[list[JobEventResponse]] = None
     skills: Optional[list[SkillResponse]] = None
