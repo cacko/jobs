@@ -1,6 +1,6 @@
 import logging
 import typer
-from jobs.cli.prompts.events import EventInput
+from jobs.cli.prompts.events import EventInput, EventIdInput
 from jobs.cli.prompts.job import JobInput
 from jobs.cli.prompts.jobs import ApplyInput
 from jobs.core.country import to_iso
@@ -77,6 +77,22 @@ def cmd_event(input: EventInput):
     job.save()
     logging.debug(f"Changaing job status to {job.Status}")
 
+def cmd_delete_event(input: EventIdInput):
+    event: Event = Event.get(Event.id == input.event_id)
+    print(event)
+    job = event.Job
+    event.delete_instance()
+    print(job)
+    last_event = Event.select().where(Event.Job == job).order_by(Event.timestamp.desc()).first()
+    match last_event.Event if last_event else None: 
+        case JobEvent.REJECT:
+            job.Status = JobStatus.REJECTED
+        case JobEvent.APPLIED:
+            job.Status = JobStatus.PENDING
+        case _:
+            job.Status = JobStatus.IN_PROGRESS
+    job.save()
+    logging.info(f"Deleted event: {event}")
 
 def cmd_tokens(input: JobInput):
     job: Job = Job.get(Job.slug == input.job_id)
