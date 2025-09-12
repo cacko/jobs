@@ -90,7 +90,7 @@ class Job(DbModel):
             ))
         if 'only' not in kwds:
             self.last_modified = default_timestamp()
-            UpdatesDb().updates(self.useruuid, self.last_modified)
+            UpdatesDb().updates(self.useremail, self.last_modified)
         return super().save(*args, **kwds)
     
     @property
