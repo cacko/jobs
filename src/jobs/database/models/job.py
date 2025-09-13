@@ -136,6 +136,7 @@ class Job(DbModel):
             name=token.word
         )[0] for token in tokens]
         self.skills.add(new_skills)
+        self.save()
 
     class Meta:
         database = Database.db
