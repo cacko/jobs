@@ -90,7 +90,7 @@ class Job(DbModel):
             ))
         if 'only' not in kwds:
             self.last_modified = default_timestamp()
-            UpdatesDb().updates(self.useremail, self.last_modified)
+        UpdatesDb().updates(self.useremail, self.last_modified)
         return super().save(*args, **kwds)
     
     @property
@@ -136,7 +136,8 @@ class Job(DbModel):
             name=token.word
         )[0] for token in tokens]
         self.skills.add(new_skills)
-        self.save()
+        self.last_modified = default_timestamp()
+        self.save(only=["deleted", "last_modified"])
 
     class Meta:
         database = Database.db
