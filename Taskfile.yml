@@ -5,7 +5,7 @@ version: "3"
 vars:
   PROJECT: jobs
 env:
-  LOG_LEVEL: '{{.JOBS_LOG_LEVEL}}'
+  LOG_LEVEL: '{{.JOBS_LOG_LEVEL | lower}}'
 
 tasks:
   default:
@@ -63,7 +63,7 @@ tasks:
     desc: systemd exec
     dir: src/
     cmds:
-      - direnv exec . mamba run --live-stream -n {{.PROJECT}} uvicorn 'jobs.main:create_app' --host 0.0.0.0 --port 44551 --log-level "{{.LOG_LEVEL | lower}}" --use-colors --factory --loop uvloop --access-log
+      - direnv exec . mamba run --live-stream -n {{.PROJECT}} uvicorn 'jobs.main:create_app' --host 0.0.0.0 --port 44551 --log-level {{.LOG_LEVEL}} --use-colors --factory --loop uvloop --access-log
   
   export:
     desc: export env
