@@ -5,7 +5,7 @@ version: "3"
 vars:
   PROJECT: jobs
 env:
-  LOG_LEVEL: '{{.JOBS_LOG_LEVEL}}'
+  LOG_LEVEL: '{{.JOBS_LOG_LEVEL | lower}}'
 
 tasks:
   default:
