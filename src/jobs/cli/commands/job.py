@@ -28,7 +28,6 @@ def cmd_apply(input: ApplyInput):
     cover_letter_obj = CoverLetter.from_path(input.cover_letter)
     company_obj, _ = Company.get_or_create(name=input.company)
     user_obj = User.get(User.email == "alex@cacko.net")
-
     job, created = Job.get_or_create(
         Source=input.source,
         Company=company_obj,

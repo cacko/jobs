@@ -33,10 +33,10 @@ class ApplyInput(BaseModel):
     def cover_letter(self) -> Path:
         return Path(CL_PATH) / self.cover_letter_path
 
-    @field_validator("url")
-    @classmethod
-    def clean_url(cls, url: str):
-        return urlparse(url)._replace(query="", fragment="").geturl()
+    # @field_validator("url")
+    # @classmethod
+    # def clean_url(cls, url: str):
+    #     return urlparse(url)._replace(query="", fragment="").geturl()
 
 
 @contextmanager
