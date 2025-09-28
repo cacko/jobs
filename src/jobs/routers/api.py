@@ -19,7 +19,7 @@ router = APIRouter()
 def get_list_response(
     email: str, page: int = 1, limit: int = 50, last_modified: Optional[datetime] = None
 ):
-    
+
     results = []
     filters = [Job.User.email == email]
     if last_modified:
@@ -74,6 +74,17 @@ def get_list_response(
         headers["x-pagination-next"] = next_url
     return JSONResponse(content=results, headers=headers)
 
+@router.get("/api/jobs/{email}.xlsx", tags=["api"])
+def xlsx_export(enail: str, auth_user=Depends(check_auth)):
+    xlsx_path = to_xlsx()
+    assert xlsx_path.exists()
+    return FileResponse(
+        path=xlsx_path.as_posix(),
+        filename=xlsx_path.name,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
+
+
 
 @router.get("/api/jobs/{email}", tags=["api"])
 def list_jobs(
@@ -100,21 +111,10 @@ def get_job(email: str, slug: str, auth_user=Depends(check_auth)):
         raise HTTPException(404)
 
 
-@router.get("/api/jobs/{email}.xlsx", tags=["api"])
-def xlsx_export(enail: str, auth_user=Depends(check_auth)):
-    xlsx_path = to_xlsx()
-    assert xlsx_path.exists()
-    return FileResponse(
-        path=xlsx_path.as_posix(),
-        filename=xlsx_path.name,
-        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    )
 
 
 @router.put("/api/events/{email}", tags=["api"])
-def add_job_event(
-    email: str, input: EventRequest, auth_user=Depends(check_auth)
-):
+def add_job_event(email: str, input: EventRequest, auth_user=Depends(check_auth)):
     job: Job = Job.get(Job.slug == input.job_id, Job.User == auth_user)
     assert job
     event, created = Event.get_or_create(
