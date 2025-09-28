@@ -100,7 +100,7 @@ def get_job(email: str, slug: str, auth_user=Depends(check_auth)):
         raise HTTPException(404)
 
 
-@router.get("/api/export/{email}/jobs.xlsx", tags=["api"])
+@router.get("/api/jobs/{email}.xlsx", tags=["api"])
 def xlsx_export(enail: str, auth_user=Depends(check_auth)):
     xlsx_path = to_xlsx()
     assert xlsx_path.exists()
