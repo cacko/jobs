@@ -23,7 +23,8 @@ def get_auth_user(request: Request) -> User:
         user, _ = User.get_or_create(
             email=auth_user.email,
             uuid=auth_user.uid,
-            name=auth_user.name
+            name=auth_user.name,
+            picture=auth_user.picture
         )
         return user
     except AssertionError:

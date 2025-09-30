@@ -7,6 +7,7 @@ class User(DbModel):
     email = CleanCharField(unique=True)
     uuid = CleanCharField(unique=True)
     name = CleanCharField(null=True)
+    picture = CleanCharField(null=True)
 
     @classmethod
     def get_or_create(cls, **kwargs) -> tuple["User", bool]:
