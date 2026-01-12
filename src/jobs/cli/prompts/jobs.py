@@ -61,7 +61,7 @@ def apply_job_form():
             default=JobStatus.PENDING.value,
         ),
         country=questionary.autocomplete(
-            "Country", choices=[cnt.name for cnt in countries], default="United Kingdom"
+            "Country", choices=[cnt.name for cnt in countries], default="Bulgaria"
         ),
         source=questionary.select(
             "Source",
